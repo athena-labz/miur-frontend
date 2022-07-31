@@ -14,6 +14,7 @@ import { Separator } from "components/Separator/Separator";
 import { SidebarHelp } from "components/Sidebar/SidebarHelp";
 import React from "react";
 import { NavLink, useLocation } from "react-router-dom";
+import { useColorMode } from "@chakra-ui/react";
 
 // this function creates the links and collapses that appear in the sidebar (left menu)
 
@@ -173,6 +174,8 @@ const SidebarContent = ({ logoText, routes }) => {
   };
 
   const links = <>{createLinks(routes)}</>;
+  const { colorMode, toggleColorMode } = useColorMode()
+  if(colorMode === "light") toggleColorMode()
 
   return (
     <>
@@ -197,7 +200,16 @@ const SidebarContent = ({ logoText, routes }) => {
       <Stack direction="column" mb="40px">
         <Box>{links}</Box>
       </Stack>
-      
+     {/* <Flex
+        justifyContent="center"
+        alignItems="center"
+        mb="24px"
+      >
+        <Button onClick={toggleColorMode}>
+          Toggle {colorMode === "light" ? "Dark" : "Light"}
+        </Button>
+      </Flex>*/}
+
     </>
   )
 }
