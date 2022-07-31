@@ -2,7 +2,7 @@ import { Box, Flex, Icon, Text, useColorModeValue } from "@chakra-ui/react";
 import React from "react";
 
 function TransactionRow(props) {
-  const textColor = useColorModeValue("gray.700", "white");
+  const textColor =  "white"
   const { name, date, logo, price } = props;
 
   return (

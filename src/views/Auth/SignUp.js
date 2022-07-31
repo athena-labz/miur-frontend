@@ -19,10 +19,10 @@ import React from "react";
 import { FaApple, FaFacebook, FaGoogle } from "react-icons/fa";
 
 function SignUp() {
-  const titleColor = useColorModeValue("teal.300", "teal.200");
-  const textColor = useColorModeValue("gray.700", "white");
-  const bgColor = useColorModeValue("white", "gray.700");
-  const bgIcons = useColorModeValue("teal.200", "rgba(255, 255, 255, 0.5)");
+  const titleColor =  "teal.200"
+  const textColor =  "white"
+  const bgColor =  "gray.700"
+  const bgIcons =  "rgba(255, 255, 255, 0.5)"
   return (
     <Flex
       direction='column'

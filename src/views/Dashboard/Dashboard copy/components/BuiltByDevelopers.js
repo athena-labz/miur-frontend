@@ -15,7 +15,7 @@ import React from "react";
 import { BsArrowRight } from "react-icons/bs";
 
 const BuiltByDevelopers = ({ title, name, description, image }) => {
-  const textColor = useColorModeValue("gray.700", "white");
+  const textColor =  "white"
 
   return (
     <Card minHeight='290.5px' p='1.2rem'>

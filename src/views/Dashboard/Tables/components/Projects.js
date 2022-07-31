@@ -17,7 +17,7 @@ import TablesProjectRow from "components/Tables/TablesProjectRow";
 import React from "react";
 
 const Projects = ({ title, captions, data }) => {
-  const textColor = useColorModeValue("gray.700", "white");
+  const textColor =  "white"
   return (
     <Card my='22px' overflowX={{ sm: "scroll", xl: "hidden" }}>
       <CardHeader p='6px 0px 22px 0px'>

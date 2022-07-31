@@ -36,10 +36,10 @@ export default function Configurator(props) {
     "linear-gradient(81.62deg, #313860 2.25%, #151928 79.87%)",
     "white"
   );
-  let colorButton = useColorModeValue("white", "gray.700");
-  const secondaryButtonBg = useColorModeValue("white", "transparent");
-  const secondaryButtonBorder = useColorModeValue("gray.700", "white");
-  const secondaryButtonColor = useColorModeValue("gray.700", "white");
+  let colorButton =  "gray.700"
+  const secondaryButtonBg =  "transparent"
+  const secondaryButtonBorder =  "white"
+  const secondaryButtonColor =  "white"
   const settingsRef = React.useRef();
   return (
     <>

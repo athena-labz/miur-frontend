@@ -18,12 +18,12 @@ const Header = ({
   tabs,
 }) => {
   // Chakra color mode
-  const textColor = useColorModeValue("gray.700", "white");
+  const textColor =  "white"
   const borderProfileColor = useColorModeValue(
     "white",
     "rgba(255, 255, 255, 0.31)"
   );
-  const emailColor = useColorModeValue("gray.400", "gray.300");
+  const emailColor =  "gray.300"
   return (
     <Box
       mb={{ sm: "205px", md: "75px", xl: "70px" }}

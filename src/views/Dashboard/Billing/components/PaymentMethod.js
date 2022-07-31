@@ -16,9 +16,9 @@ import React from "react";
 import { FaPencilAlt } from "react-icons/fa";
 
 const PaymentMethod = ({ title, mastercard, visa }) => {
-  const iconTeal = useColorModeValue("teal.300", "teal.300");
-  const textColor = useColorModeValue("gray.700", "white");
-  const borderColor = useColorModeValue("#dee2e6", "gray.500");
+  const iconTeal =  "teal.300"
+  const textColor =  "white"
+  const borderColor =  "gray.500"
   const bgButton = useColorModeValue(
     "linear-gradient(81.62deg, #313860 2.25%, #151928 79.87%)",
     "gray.800"

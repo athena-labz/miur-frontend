@@ -23,7 +23,7 @@ import { dashboardTableData, timelineData } from "variables/general";
 import Projects from "./components/Projects";
 
 export default function Dashboard() {
-  const iconBoxInside = useColorModeValue("white", "white");
+  const iconBoxInside =  "white"
 
   return (
     <Flex flexDirection='column' pt={{ base: "120px", md: "75px" }}>

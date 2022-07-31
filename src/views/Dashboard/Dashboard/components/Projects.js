@@ -23,12 +23,12 @@ import React from "react";
 import { IoCheckmarkDoneCircleSharp } from "react-icons/io5";
 
 const Projects = ({ title, amount, captions, data }) => {
-  const textColor = useColorModeValue("gray.700", "white");
-  let mainTeal = useColorModeValue("teal.300", "teal.300");
-  let inputBg = useColorModeValue("white", "gray.800");
-  let mainText = useColorModeValue("gray.700", "gray.200");
-  let navbarIcon = useColorModeValue("gray.500", "gray.200");
-  let searchIcon = useColorModeValue("gray.700", "gray.200");
+  const textColor =  "white"
+  let mainTeal =  "teal.300"
+  let inputBg =  "gray.800"
+  let mainText =  "gray.200"
+  let navbarIcon =  "gray.200"
+  let searchIcon =  "gray.200"
 
   return (
     <Card p='16px' overflowX={{ sm: "scroll", xl: "hidden" }}>

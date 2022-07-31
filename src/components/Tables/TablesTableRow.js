@@ -12,9 +12,9 @@ import React from "react";
 
 function TablesTableRow(props) {
   const { logo, name, email, subdomain, domain, status, date } = props;
-  const textColor = useColorModeValue("gray.700", "white");
-  const bgStatus = useColorModeValue("gray.400", "#1a202c");
-  const colorStatus = useColorModeValue("white", "gray.400");
+  const textColor =  "white"
+  const bgStatus =  "#1a202c"
+  const colorStatus =  "gray.400"
 
   return (
     <Tr>

@@ -29,7 +29,7 @@ import SalesOverview from "./components/SalesOverview";
 import WorkWithTheRockets from "./components/WorkWithTheRockets";
 
 export default function Dashboard() {
-  const iconBoxInside = useColorModeValue("white", "white");
+  const iconBoxInside =  "white"
 
   return (
     <Flex flexDirection='column' pt={{ base: "120px", md: "75px" }}>

@@ -15,7 +15,7 @@ const Transactions = ({
   olderTransactions,
 }) => {
   // Chakra color mode
-  const textColor = useColorModeValue("gray.700", "white");
+  const textColor =  "white"
 
   return (
     <Card my='24px' ms={{ lg: "24px" }}>

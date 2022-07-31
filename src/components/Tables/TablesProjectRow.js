@@ -13,7 +13,7 @@ import { FaEllipsisV } from "react-icons/fa";
 
 function DashboardTableRow(props) {
   const { logo, name, status, budget, progression } = props;
-  const textColor = useColorModeValue("gray.700", "white");
+  const textColor =  "white"
   return (
     <Tr>
       <Td minWidth={{ sm: "250px" }} pl="0px">

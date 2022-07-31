@@ -16,7 +16,7 @@ import TablesTableRow from "components/Tables/TablesTableRow";
 import React from "react";
 
 const Authors = ({ title, captions, data }) => {
-  const textColor = useColorModeValue("gray.700", "white");
+  const textColor =  "white"
   return (
     <Card overflowX={{ sm: "scroll", xl: "hidden" }}>
       <CardHeader p='6px 0px 22px 0px'>

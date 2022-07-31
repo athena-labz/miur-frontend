@@ -10,7 +10,7 @@ import {
 import React from "react";
 
 function InvoicesRow(props) {
-  const textColor = useColorModeValue("gray.700", "white");
+  const textColor =  "white"
   const { date, code, price, format, logo } = props;
 
   return (

@@ -8,7 +8,7 @@ import InvoicesRow from "components/Tables/InvoicesRow";
 import React from "react";
 
 const Invoices = ({ title, data }) => {
-  const textColor = useColorModeValue("gray.700", "white");
+  const textColor =  "white"
 
   return (
     <Card

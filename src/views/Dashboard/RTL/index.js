@@ -31,7 +31,7 @@ import WorkWithTheRockets from "../Dashboard/components/WorkWithTheRockets";
 export default function Dashboard() {
   // Chakra Color Mode
 
-  const iconBoxInside = useColorModeValue("white", "white");
+  const iconBoxInside =  "white"
 
   return (
     <Flex flexDirection='column' pt={{ base: "120px", md: "75px" }}>

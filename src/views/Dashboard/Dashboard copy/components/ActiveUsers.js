@@ -14,8 +14,8 @@ import React from "react";
 import ChartStatistics from "./ChartStatistics";
 
 const ActiveUsers = ({ title, percentage, chart }) => {
-  const iconBoxInside = useColorModeValue("white", "white");
-  const textColor = useColorModeValue("gray.700", "white");
+  const iconBoxInside =  "white"
+  const textColor =  "white"
   return (
     <Card p='16px'>
       <CardBody>

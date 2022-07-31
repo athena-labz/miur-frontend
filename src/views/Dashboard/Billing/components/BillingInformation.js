@@ -8,7 +8,7 @@ import BillingRow from "components/Tables/BillingRow";
 import React from "react";
 
 const BillingInformation = ({ title, data }) => {
-  const textColor = useColorModeValue("gray.700", "white");
+  const textColor =  "white"
   return (
     <Card my={{ lg: "24px" }} me={{ lg: "24px" }}>
       <Flex direction='column'>

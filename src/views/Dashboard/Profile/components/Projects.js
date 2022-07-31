@@ -24,7 +24,7 @@ import ProjectCard from "./ProjectCard";
 
 const Projects = ({ title, description }) => {
   // Chakra color mode
-  const textColor = useColorModeValue("gray.700", "white");
+  const textColor =  "white"
 
   return (
     <Card p='16px' my='24px'>

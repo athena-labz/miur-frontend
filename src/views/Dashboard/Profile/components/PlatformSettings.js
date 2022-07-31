@@ -8,7 +8,7 @@ import React from "react";
 
 const PlatformSettings = ({ title, subtitle1, subtitle2 }) => {
   // Chakra color mode
-  const textColor = useColorModeValue("gray.700", "white");
+  const textColor =  "white"
   return (
     <Card p='16px'>
       <CardHeader p='12px 5px' mb='12px'>

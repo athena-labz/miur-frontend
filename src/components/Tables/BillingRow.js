@@ -10,9 +10,9 @@ import React from "react";
 import { FaPencilAlt, FaTrashAlt } from "react-icons/fa";
 
 function BillingRow(props) {
-  const textColor = useColorModeValue("gray.700", "white");
-  const bgColor = useColorModeValue("#F8F9FA", "gray.800");
-  const nameColor = useColorModeValue("gray.500", "white");
+  const textColor =  "white"
+  const bgColor =  "gray.800"
+  const nameColor =  "white"
   const { name, company, email, number } = props;
 
   return (

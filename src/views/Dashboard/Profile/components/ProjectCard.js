@@ -13,7 +13,7 @@ import React from "react";
 
 const ProjectCard = ({ image, name, category, avatars, description }) => {
   // Chakra color mode
-  const textColor = useColorModeValue("gray.700", "white");
+  const textColor =  "white"
 
   return (
     <Flex direction='column'>

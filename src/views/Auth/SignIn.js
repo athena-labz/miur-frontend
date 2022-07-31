@@ -18,8 +18,8 @@ import signInImage from "assets/img/signInImage.png";
 
 function SignIn() {
   // Chakra color mode
-  const titleColor = useColorModeValue("teal.300", "teal.200");
-  const textColor = useColorModeValue("gray.400", "white");
+  const titleColor =  "teal.200"
+  const textColor =  "white"
   return (
     <Flex position='relative' mb='40px'>
       <Flex

@@ -25,8 +25,8 @@ export default function AdminNavbar(props) {
   } = props;
 
   // Here are all the props that may change depending on navbar's type or state.(secondary, variant, scrolled)
-  let mainText = useColorModeValue("gray.700", "gray.200");
-  let secondaryText = useColorModeValue("gray.400", "gray.200");
+  let mainText =  "gray.200"
+  let secondaryText =  "gray.200"
   let navbarPosition = "absolute";
   let navbarFilter = "none";
   let navbarBackdrop = "blur(21px)";
@@ -46,7 +46,7 @@ export default function AdminNavbar(props) {
         "linear-gradient(112.83deg, rgba(255, 255, 255, 0.82) 0%, rgba(255, 255, 255, 0.8) 110.84%)",
         "linear-gradient(112.83deg, rgba(255, 255, 255, 0.21) 0%, rgba(255, 255, 255, 0) 110.84%)"
       );
-      navbarBorder = useColorModeValue("#FFFFFF", "rgba(255, 255, 255, 0.31)");
+      navbarBorder =  "rgba(255, 255, 255, 0.31)"
       navbarFilter = useColorModeValue(
         "none",
         "drop-shadow(0px 7px 23px rgba(0, 0, 0, 0.05))"

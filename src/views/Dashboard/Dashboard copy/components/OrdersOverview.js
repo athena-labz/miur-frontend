@@ -8,7 +8,7 @@ import TimelineRow from "components/Tables/TimelineRow";
 import React from "react";
 
 const OrdersOverview = ({ title, amount, data }) => {
-  const textColor = useColorModeValue("gray.700", "white");
+  const textColor =  "white"
 
   return (
     <Card maxH='100%'>

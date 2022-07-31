@@ -20,7 +20,7 @@ import React from "react";
 
 const Conversations = ({ title }) => {
   // Chakra color mode
-  const textColor = useColorModeValue("gray.700", "white");
+  const textColor =  "white"
 
   return (
     <Card p='16px'>

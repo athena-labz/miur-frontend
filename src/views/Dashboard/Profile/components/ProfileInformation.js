@@ -16,7 +16,7 @@ const ProfileInformation = ({
   location,
 }) => {
   // Chakra color mode
-  const textColor = useColorModeValue("gray.700", "white");
+  const textColor =  "white"
 
   return (
     <Card p='16px' my={{ sm: "24px", xl: "0px" }}>

@@ -31,8 +31,8 @@ export default function AuthNavbar(props) {
     return window.location.href.indexOf(routeName) > -1 ? true : false;
   };
   // Chakra color mode
-  let navbarIcon = useColorModeValue("gray.700", "gray.200");
-  let mainText = useColorModeValue("gray.700", "gray.200");
+  let navbarIcon =  "gray.200"
+  let mainText =  "gray.200"
   let navbarBg = useColorModeValue(
     "linear-gradient(112.83deg, rgba(255, 255, 255, 0.82) 0%, rgba(255, 255, 255, 0.8) 110.84%)",
     "linear-gradient(112.83deg, rgba(255, 255, 255, 0.21) 0%, rgba(255, 255, 255, 0) 110.84%)"
