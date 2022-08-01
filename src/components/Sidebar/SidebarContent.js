@@ -32,10 +32,10 @@ const SidebarContent = ({ logoText, routes }) => {
   };
   const createLinks = (routes) => {
     // Chakra Color Mode
-    const activeBg =  "gray.700"
-    const inactiveBg =  "gray.700"
-    const activeColor =  "white"
-    const inactiveColor =  "gray.400"
+    const activeBg = "gray.700"
+    const inactiveBg = "gray.700"
+    const activeColor = "white"
+    const inactiveColor = "gray.400"
 
     return routes.map((prop, key) => {
       if (prop.redirect) {
@@ -174,6 +174,8 @@ const SidebarContent = ({ logoText, routes }) => {
   };
 
   const links = <>{createLinks(routes)}</>;
+  const { colorMode, toggleColorMode } = useColorMode()
+  if (colorMode === "light") toggleColorMode()
 
   return (
     <>
