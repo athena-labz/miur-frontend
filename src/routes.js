@@ -14,7 +14,6 @@ import {
   PersonIcon,
   DocumentIcon,
   RocketIcon,
-  SupportIcon,
 } from "components/Icons/Icons";
 
 var dashRoutes = [
@@ -42,40 +41,16 @@ var dashRoutes = [
     component: Billing,
     layout: "/admin",
   },
-
   {
-    name: "ACCOUNT PAGES",
-    category: "account",
-    rtlName: "صفحات",
-    state: "pageCollapse",
-    views: [
-      {
-        path: "/profile",
-        name: "Profile",
-        rtlName: "لوحة القيادة",
-        icon: <PersonIcon color="inherit" />,
-        secondaryNavbar: true,
-        component: Profile,
-        layout: "/admin",
-      },
-      {
-        path: "/signin",
-        name: "Sign In",
-        rtlName: "لوحة القيادة",
-        icon: <DocumentIcon color="inherit" />,
-        component: SignIn,
-        layout: "/auth",
-      },
-      {
-        path: "/signup",
-        name: "Sign Up",
-        rtlName: "لوحة القيادة",
-        icon: <RocketIcon color="inherit" />,
-        secondaryNavbar: true,
-        component: SignUp,
-        layout: "/auth",
-      },
-    ],
+    path: "/profile",
+    name: "Profile",
+    rtlName: "لوحة القيادة",
+    icon: <PersonIcon color="inherit" />,
+    secondaryNavbar: true,
+    component: Profile,
+    layout: "/admin",
   },
+
+
 ];
 export default dashRoutes;
