@@ -3,6 +3,7 @@
 import {
   Box,
   Button, Flex,
+  Image,
   Link,
   Stack,
   Text,
@@ -190,7 +191,7 @@ const SidebarContent = ({ logoText, routes }) => {
           alignItems="center"
           fontSize="11px"
         >
-          {/* add logo athena */}
+          <Image src="https://i.imgur.com/Ry1PZew.png" width="2rem" height="1.8rem" mr="0.8rem" />
           <Text fontSize="sm" mt="3px">
             {logoText}
           </Text>
