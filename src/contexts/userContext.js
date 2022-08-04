@@ -25,7 +25,7 @@ const mock_users = [
 export function UserContextProvider({ children }) {
   const toast = useToast();
 
-  const [user, setUser] = useState({ isSignedIn: false }); 
+  const [user, setUser] = useState({ isSignedIn: false });
 
   function getUser() {
     const user = localStorage.getItem("user");
@@ -87,11 +87,15 @@ export function UserContextProvider({ children }) {
   function logout() {
     const user = getUser();
 
-    if (user !== null)
+    if (user !== null) {
+      setUser(null)
       localStorage.setItem(
         "user",
         JSON.stringify({ ...user, isSignedIn: false })
       );
+      document.location.reload(true);
+    }
+
   }
 
 
@@ -101,8 +105,8 @@ export function UserContextProvider({ children }) {
         isSignedIn,
         user,
         register: register,
-        login: login,
-        logout: logout,
+        login,
+        logout,
       }}
     >
       {children}

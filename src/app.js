@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { HashRouter, Route, Switch, Redirect } from "react-router-dom";
+import { HashRouter, Route, Switch, Redirect, BrowserRouter } from "react-router-dom";
 
 import AuthLayout from "layouts/Auth.js";
 import AdminLayout from "layouts/Admin.js";
@@ -11,10 +11,10 @@ export default function App() {
 
     useEffect(() => { if (user.isSignedIn) { console.log("FEZ LOGIN!") } }, [user]);
     return (
-        <HashRouter>
+        <BrowserRouter>
             <Switch>
                 {
-                    !isSignedIn() || !user.isSignedIn ? (
+                    !isSignedIn() && !user.isSignedIn ? (
                         <>
                             <Route path={`/auth`} component={AuthLayout} />
                             <Redirect from={`/`} to="/auth/signin" />
@@ -27,6 +27,6 @@ export default function App() {
                     )
                 }
             </Switch>
-        </HashRouter>
+        </BrowserRouter>
     )
 }

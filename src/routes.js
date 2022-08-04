@@ -4,15 +4,13 @@ import Tables from "views/Dashboard/Tables";
 import Billing from "views/Dashboard/Billing";
 import RTLPage from "views/Dashboard/RTL";
 import Profile from "views/Dashboard/Profile";
-import SignIn from "views/Auth/SignIn.js";
-import SignUp from "views/Auth/SignUp.js";
+import { ArrowBackIcon } from '@chakra-ui/icons';
 
 import {
   HomeIcon,
   StatsIcon,
   CreditIcon,
   PersonIcon,
-  DocumentIcon,
   RocketIcon,
 } from "components/Icons/Icons";
 
@@ -49,6 +47,16 @@ var dashRoutes = [
     secondaryNavbar: true,
     component: Profile,
     layout: "/admin",
+  },
+  {
+    path: null,
+    name: "Logout",
+    rtlName: "",
+    icon: <ArrowBackIcon color="inherit" />,
+    secondaryNavbar: true,
+    component: Profile,
+    layout: "/admin",
+    isLogout:true
   },
 
 

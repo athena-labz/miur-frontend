@@ -33,7 +33,7 @@ function SignIn() {
   const submitLogin = async () => {
     const correctCredentials = await login(email, password);
     setIsSignedIn(correctCredentials);
-   // document.location.reload(true);
+   // 
   }
 
   return (
