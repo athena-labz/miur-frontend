@@ -25,7 +25,7 @@ const mock_users = [
 export function UserContextProvider({ children }) {
   const toast = useToast();
 
-  const [user, setUser] = useState({ isSignedIn: false });
+  const [user, setUser] = useState({ isSignedIn: false }); 
 
   function getUser() {
     const user = localStorage.getItem("user");
@@ -74,6 +74,7 @@ export function UserContextProvider({ children }) {
     let user_ = mock_users.find(user => user.email === email && user.password === password)
 
     if (Boolean(user_)) {
+      setUser({ ...user_, isSignedIn: true })
       localStorage.setItem(
         "user",
         JSON.stringify({ ...user_, isSignedIn: true })
