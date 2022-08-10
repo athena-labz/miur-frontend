@@ -8,6 +8,7 @@ import { UserContext_ } from "contexts/userContext";
 
 export default function App() {
     const { isSignedIn,user } = useContext(UserContext_);
+    console.log(window.location.pathname ,"HOME")
 
     useEffect(() => { if (user.isSignedIn) { console.log("FEZ LOGIN!") } }, [user]);
     return (
@@ -22,7 +23,9 @@ export default function App() {
                     ) : (
                         <>
                             <Route path={`/admin`} component={AdminLayout} />
-                            <Redirect from={`/`} to="/admin/dashboard" />
+                            
+                            {window.location.pathname === "/auth/signin" && <Redirect from={`/`} to="/admin/dashboard" />}
+                            {window.location.pathname === "/" && <Redirect from={`/`} to="/admin/dashboard" />}
                         </>
                     )
                 }

@@ -42,6 +42,9 @@ const SidebarContent = ({ logoText, routes }) => {
       if (prop.redirect) {
         return null;
       }
+      if (prop.notSideBar) {
+        return null;
+      }
       if (prop.category) {
         var st = {};
         st[prop["state"]] = !state[prop.state];

@@ -4,17 +4,7 @@ import {
   Button
 } from "@chakra-ui/react";
 // assets
-import peopleImage from "assets/img/people-image.png";
-import logoChakra from "assets/svg/logo-white.svg";
-import BarChart from "components/Charts/BarChart";
-import LineChart from "components/Charts/LineChart";
-// Custom icons
-import {
-  CartIcon,
-  DocumentIcon,
-  GlobeIcon,
-  WalletIcon,
-} from "components/Icons/Icons.js";
+import { Link } from '@chakra-ui/react'
 import React from "react";
 import { dashboardTableData, timelineData } from "variables/general";
 import Projects from "./components/Projects";
@@ -39,7 +29,8 @@ export default function Dashboard() {
           _hover="teal.300"
           color="white"
           fontSize="md"
-
+          as={Link}
+          href="projects/create-project"
         >
           CREATE A NEW PROJECT
         </Button>

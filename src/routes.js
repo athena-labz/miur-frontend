@@ -13,6 +13,7 @@ import {
   PersonIcon,
   RocketIcon,
 } from "components/Icons/Icons";
+import CreateProject from "views/Dashboard/CreateProject";
 
 var dashRoutes = [
   {
@@ -56,7 +57,16 @@ var dashRoutes = [
     secondaryNavbar: true,
     component: Profile,
     layout: "/admin",
-    isLogout:true
+    isLogout: true
+  },
+  {
+    path: "/projects/create-project",
+    name: "create",
+    notSideBar: true,
+    icon: <ArrowBackIcon color="inherit" />,
+    secondaryNavbar: true,
+    component: CreateProject,
+    layout: "/admin",
   },
 
 
