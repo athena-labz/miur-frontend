@@ -15,20 +15,7 @@ import { useWallet } from "contexts/walletContext";
 
 export default function App() {
   const { isSignedIn, user } = useContext(UserContext_);
-  const { getWallets, connect } = useWallet();
 
-  console.log(window.location.pathname, "HOME");
-
-  useEffect(() => {
-    console.log(getWallets());
-    connect("ccvault").then((res) => console.log(res));
-  }, []);
-
-  useEffect(() => {
-    if (user.isSignedIn) {
-      console.log("FEZ LOGIN!");
-    }
-  }, [user]);
   return (
     <BrowserRouter>
       <Switch>

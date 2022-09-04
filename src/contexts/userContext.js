@@ -1,4 +1,10 @@
-import { createContext, ReactNode, useContext, useState } from "react";
+import {
+  createContext,
+  ReactNode,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
 
 //import { addrToPubKeyHash, signTx } from "../wallet/utils";
 
@@ -28,7 +34,11 @@ const mock_users = [
 export function UserContextProvider({ children }) {
   const toast = useToast();
 
-  const [user, setUser] = useState({ isSignedIn: false });
+  const [user, setUser] = useState({isSignedIn: false});
+
+  useEffect(() => {
+    setUser(getUser());
+  }, []);
 
   function getUser() {
     const user = localStorage.getItem("user");
@@ -113,18 +123,11 @@ export function UserContextProvider({ children }) {
 
         const { signature, timestamp } = await makeSignatureProof(api);
 
-        updateUser(
-          address,
-          nickname,
-          email,
-          signature,
-          timestamp,
-          true
-        );
+        updateUser(address, nickname, email, signature, timestamp, true);
 
         return true;
       } catch (error) {
-        console.dir(error)
+        console.dir(error);
         if (error.response.data.code === "address-not-found") return false;
         return Promise.reject(error);
       }
