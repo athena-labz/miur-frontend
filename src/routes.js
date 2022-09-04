@@ -4,7 +4,8 @@ import Tables from "views/Dashboard/Tables";
 import Billing from "views/Dashboard/Billing";
 import RTLPage from "views/Dashboard/RTL";
 import Profile from "views/Dashboard/Profile";
-import { ArrowBackIcon } from '@chakra-ui/icons';
+import ProjectView from "views/Dashboard/ProjectView";
+import { ArrowBackIcon } from "@chakra-ui/icons";
 
 import {
   HomeIcon,
@@ -57,7 +58,7 @@ var dashRoutes = [
     secondaryNavbar: true,
     component: Profile,
     layout: "/admin",
-    isLogout: true
+    isLogout: true,
   },
   {
     path: "/projects/create-project",
@@ -68,7 +69,14 @@ var dashRoutes = [
     component: CreateProject,
     layout: "/admin",
   },
-
-
+  {
+    path: "/projects/:project_id",
+    name: "project",
+    notSideBar: true,
+    icon: <ArrowBackIcon color="inherit" />,
+    secondaryNavbar: true,
+    component: ProjectView,
+    layout: "/admin",
+  },
 ];
 export default dashRoutes;
