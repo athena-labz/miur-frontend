@@ -16,7 +16,7 @@ function truncate(input, length) {
 }
 
 function DashboardTableRow(props) {
-  const { name, description, members, budget } = props;
+  const { projectKey, name, description, members, budget } = props;
   const textColor = "white";
 
   return (
