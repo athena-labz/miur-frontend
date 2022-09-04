@@ -113,9 +113,10 @@ const Projects = ({ title, amount, captions, data }) => {
           {data.map((row) => {
             return (
               <DashboardTableRow
-                key={row.name}
+                key={`DashboardRow${row.projectKey}`}
+                projectKey={row.projectKey}
                 name={row.name}
-                logo={row.logo}
+                description={row.description}
                 members={row.members}
                 budget={row.budget}
                 progression={row.progression}
