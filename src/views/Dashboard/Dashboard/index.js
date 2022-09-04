@@ -36,9 +36,9 @@ export default function Dashboard() {
         </Button>
       </Flex>
       <Projects
-        title={"Campaings"}
+        title={"Projects"}
         amount={30}
-        captions={["Projects Names", "Apoiadores", "Budget", "Completion"]}
+        captions={["Projects Name", "Description", "Funders", "Required Rewards"]}
         data={dashboardTableData}
       />
     </Flex>

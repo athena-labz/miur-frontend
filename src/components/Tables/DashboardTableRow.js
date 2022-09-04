@@ -1,9 +1,6 @@
 import {
-  Avatar,
-  AvatarGroup,
+  Button,
   Flex,
-  Icon,
-  Progress,
   Td,
   Text,
   Tr,
@@ -11,14 +8,21 @@ import {
 } from "@chakra-ui/react";
 import React from "react";
 
+function truncate(input, length) {
+  if (input.length > length) {
+    return input.substring(0, length) + "...";
+  }
+  return input;
+}
+
 function DashboardTableRow(props) {
-  const { logo, name, members, budget, progression } = props;
-  const textColor =  "white"
+  const { name, description, members, budget } = props;
+  const textColor = "white";
+
   return (
     <Tr>
       <Td minWidth={{ sm: "250px" }} pl="0px">
         <Flex align="center" py=".8rem" minWidth="100%" flexWrap="nowrap">
-          <Icon as={logo} h={"24px"} w={"24px"} pe="5px" />
           <Text
             fontSize="md"
             color={textColor}
@@ -31,39 +35,34 @@ function DashboardTableRow(props) {
       </Td>
 
       <Td>
-        <AvatarGroup size="sm">
-          {members.map((member) => {
-            return (
-              <Avatar
-                name="Ryan Florence"
-                key={member}
-                src={member}
-                _hover={{ zIndex: "3", cursor: "pointer" }}
-              />
-            );
-          })}
-        </AvatarGroup>
+        <Text fontSize="md" color={textColor} minWidth="100%">
+          {truncate(description, 80)}
+        </Text>
       </Td>
+
+      <Td>
+        <Text fontSize="md" color={textColor} fontWeight="bold" pb=".5rem">
+          {members.length}
+        </Text>
+      </Td>
+
       <Td>
         <Text fontSize="md" color={textColor} fontWeight="bold" pb=".5rem">
           {budget}
         </Text>
       </Td>
+
       <Td>
-        <Flex direction="column">
-          <Text
-            fontSize="md"
-            color="teal.300"
-            fontWeight="bold"
-            pb=".2rem"
-          >{`${progression}%`}</Text>
-          <Progress
-            colorScheme={progression === 100 ? "teal" : "cyan"}
-            size="xs"
-            value={progression}
-            borderRadius="15px"
-          />
-        </Flex>
+        <Button
+          variant="outline"
+          colorScheme="teal"
+          minW="110px"
+          h="36px"
+          fontSize="xs"
+          px="1.5rem"
+        >
+          VIEW PROJECT
+        </Button>
       </Td>
     </Tr>
   );

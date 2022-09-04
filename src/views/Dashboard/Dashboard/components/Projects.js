@@ -115,7 +115,7 @@ const Projects = ({ title, amount, captions, data }) => {
               <DashboardTableRow
                 key={row.name}
                 name={row.name}
-                logo={row.logo}
+                description={row.description}
                 members={row.members}
                 budget={row.budget}
                 progression={row.progression}

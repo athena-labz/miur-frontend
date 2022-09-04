@@ -31,46 +31,40 @@ import { SiDropbox } from "react-icons/si";
 
 export const dashboardTableData = [
   {
-    logo: AdobexdLogo,
     name: "Purity UI Version",
+    description: "In non magnam delectus consequuntur ad. Quidem fugiat voluptatum animi. Deserunt est ipsam dolor corrupti totam officiis vel. Est quo sed eaque dolore iure rerum earum. Est architecto consequuntur qui sed ut nesciunt et. Doloribus molestiae pariatur sequi commodi iure non.",
     members: [avatar1, avatar2, avatar3, avatar4, avatar5],
     budget: "$14,000",
-    progression: 60,
   },
   {
-    logo: AtlassianLogo,
     name: "Add Progress Track",
+    description: "In non magnam delectus consequuntur ad. Quidem fugiat voluptatum animi. Deserunt est ipsam dolor corrupti totam officiis vel. Est quo sed eaque dolore iure rerum earum. Est architecto consequuntur qui sed ut nesciunt et. Doloribus molestiae pariatur sequi commodi iure non.",
     members: [avatar3, avatar2],
     budget: "$3,000",
-    progression: 10,
   },
   {
-    logo: SlackLogo,
     name: "Fix Platform Errors",
+    description: "In non magnam delectus consequuntur ad. Quidem fugiat voluptatum animi. Deserunt est ipsam dolor corrupti totam officiis vel. Est quo sed eaque dolore iure rerum earum. Est architecto consequuntur qui sed ut nesciunt et. Doloribus molestiae pariatur sequi commodi iure non.",
     members: [avatar10, avatar4],
     budget: "Not set",
-    progression: 100,
   },
   {
-    logo: SpotifyLogo,
     name: "Launch our Mobile App",
+    description: "In non magnam delectus consequuntur ad. Quidem fugiat voluptatum animi. Deserunt est ipsam dolor corrupti totam officiis vel. Est quo sed eaque dolore iure rerum earum. Est architecto consequuntur qui sed ut nesciunt et. Doloribus molestiae pariatur sequi commodi iure non.",
     members: [avatar2, avatar3, avatar7, avatar8],
     budget: "$32,000",
-    progression: 100,
   },
   {
-    logo: JiraLogo,
     name: "Add the New Pricing Page",
+    description: "In non magnam delectus consequuntur ad. Quidem fugiat voluptatum animi. Deserunt est ipsam dolor corrupti totam officiis vel. Est quo sed eaque dolore iure rerum earum. Est architecto consequuntur qui sed ut nesciunt et. Doloribus molestiae pariatur sequi commodi iure non.",
     members: [avatar10, avatar3, avatar7, avatar2, avatar8],
     budget: "$400",
-    progression: 25,
   },
   {
-    logo: InvisionLogo,
     name: "Redesign New Online Shop",
+    description: "In non magnam delectus consequuntur ad. Quidem fugiat voluptatum animi. Deserunt est ipsam dolor corrupti totam officiis vel. Est quo sed eaque dolore iure rerum earum. Est architecto consequuntur qui sed ut nesciunt et. Doloribus molestiae pariatur sequi commodi iure non.",
     members: [avatar9, avatar3, avatar2],
     budget: "$7,600",
-    progression: 40,
   },
 ];
 
