@@ -19,7 +19,7 @@ export default function App() {
   return (
     <BrowserRouter>
       <Switch>
-        {!isSignedIn() && !user.isSignedIn ? (
+        {!isSignedIn() && !user?.isSignedIn ? (
           <>
             <Route path={`/auth`} component={AuthLayout} />
             <Redirect from={`/`} to="/auth/signin" />
