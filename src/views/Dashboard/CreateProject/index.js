@@ -23,6 +23,29 @@ const baseAxios = axios.create({
   baseURL: process.env.REACT_APP_BASE_URL,
 });
 
+function padStr(i) {
+  return i < 10 ? "0" + i : "" + i;
+}
+
+function currentDate() {
+  var temp = new Date();
+  var dateStr =
+    padStr(temp.getFullYear()) +
+    "-" +
+    padStr(1 + temp.getMonth()) +
+    "-" +
+    padStr(temp.getDate());
+
+  return dateStr;
+}
+
+function dateToTimestamp(dateStr) {
+  const myDate = dateStr.split("-");
+  const newDate = new Date( myDate[0], myDate[1] - 1, myDate[2]);
+
+  return parseInt(newDate.getTime() / 1000);
+}
+
 function CreateProject() {
   const { user } = useUser();
   const history = useHistory();
@@ -43,6 +66,7 @@ function CreateProject() {
   const [rewardRequested, setRewardRequested] = useState(50_000);
   const [daysToComplete, setDaysToComplete] = useState(30);
   const [deliverables, setDeliverables] = useState([""]);
+  const [startDate, setStartDate] = useState(currentDate());
 
   const [infoContent, setInfoContent] = useState(null);
   const [pathAfterInfo, setPathAfterInfo] = useState(null);
@@ -69,7 +93,7 @@ function CreateProject() {
         await baseAxios.post("/projects/create", {
           signature: user.signature,
           name: title,
-          creator_address:user.address,
+          creator_address: user.address,
           short_description: shortDescription,
           long_description: longDescription,
           subjects: subjects,
@@ -78,6 +102,7 @@ function CreateProject() {
           collateral: 0,
           deliverables: deliverables,
           mediators: [],
+          start_date: dateToTimestamp(startDate)
         });
 
         setInfoContent({
@@ -177,6 +202,18 @@ function CreateProject() {
                 onChange={(event) =>
                   setDaysToComplete(parseInt(event.target.value))
                 }
+              />
+            </FormControl>
+          </Stack>
+
+          <Stack spacing={6} direction={["column", "row"]} w={"100%"}>
+            <FormControl id="start_date" isRequired>
+              <FormLabel>Start Date</FormLabel>
+              <Input
+                type="date"
+                _placeholder={{ color: "gray.500" }}
+                value={startDate}
+                onChange={(event) => setStartDate(event.target.value)}
               />
             </FormControl>
           </Stack>
