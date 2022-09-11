@@ -6,7 +6,9 @@ import {
   Tr,
   useColorModeValue,
 } from "@chakra-ui/react";
+
 import React from "react";
+import { useHistory } from 'react-router-dom';
 
 function truncate(input, length) {
   if (input.length > length) {
@@ -18,6 +20,8 @@ function truncate(input, length) {
 function DashboardTableRow(props) {
   const { projectKey, name, description, members, budget } = props;
   const textColor = "white";
+
+  const history = useHistory();
 
   return (
     <Tr>
@@ -60,6 +64,9 @@ function DashboardTableRow(props) {
           h="36px"
           fontSize="xs"
           px="1.5rem"
+          onClick={
+            () => history.push(`/admin/projects/${projectKey}`)
+          }
         >
           VIEW PROJECT
         </Button>
