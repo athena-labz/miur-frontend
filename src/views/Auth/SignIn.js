@@ -40,7 +40,6 @@ function SignIn() {
   const { connect, curWallet } = useWallet();
 
   const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
   const [infoContent, setInfoContent] = useState(null);
   const [isSignedIn, setIsSignedIn] = useState(false);
   const [isWalletConnected, setIsWalletConnected] = useState(false);
@@ -114,7 +113,7 @@ function SignIn() {
                       onClick={
                         isWalletConnected
                           ? () =>
-                              signUp(baseAxios, curWallet, email, email)
+                              signUp(baseAxios, curWallet, email)
                                 .then(() => {
                                   setIsSignedIn(true);
                                 })

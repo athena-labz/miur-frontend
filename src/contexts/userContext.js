@@ -6,30 +6,14 @@ import {
   useState,
 } from "react";
 
-//import { addrToPubKeyHash, signTx } from "../wallet/utils";
-
-//import { API } from "../contexts/WalletContext";
 import { useToast } from "@chakra-ui/react";
 
 import { C } from "lucid-cardano";
+import { Buffer } from "buffer";
 
 const SIGNATURE_TIMEOUT = parseInt(process.env.REACT_APP_SIGNATURE_TIMEOUT);
 
 export const UserContext_ = createContext({});
-const mock_users = [
-  {
-    email: "aaaa",
-    password: "aaaa",
-  },
-  {
-    email: "aaaa2",
-    password: "aaaa",
-  },
-  {
-    email: "aaaa3",
-    password: "aaaa",
-  },
-];
 
 export function UserContextProvider({ children }) {
   const toast = useToast();
@@ -52,7 +36,6 @@ export function UserContextProvider({ children }) {
 
   function updateUser(
     address,
-    nickname,
     email,
     signature,
     timestamp,
@@ -60,7 +43,6 @@ export function UserContextProvider({ children }) {
   ) {
     const user = {
       address,
-      nickname,
       email,
       signature,
       timestamp,
@@ -116,14 +98,11 @@ export function UserContextProvider({ children }) {
         ).to_bech32();
 
         const response = await axios.get(`/user/${address}`);
-        const { nickname } = response.data;
-
-        // for now simulating email as the nickname
-        const email = nickname;
+        const { email } = response.data;
 
         const { signature, timestamp } = await makeSignatureProof(api);
 
-        updateUser(address, nickname, email, signature, timestamp, true);
+        updateUser(address, email, signature, timestamp, true);
 
         return true;
       } catch (error) {
@@ -149,7 +128,7 @@ export function UserContextProvider({ children }) {
     return true;
   }
 
-  async function signUp(axios, api, nickname, email) {
+  async function signUp(axios, api, email) {
     // Check if we already have a saved user in ls with this address
     //   If we do, check if the signature has expired yet
     //     If it has,
@@ -170,10 +149,10 @@ export function UserContextProvider({ children }) {
     try {
       await axios.post(`/register/${address}`, {
         signature: signature,
-        nickname: nickname,
+        email: email,
       });
 
-      updateUser(address, nickname, email, signature, timestamp, true);
+      updateUser(address, email, signature, timestamp, true);
 
       return;
     } catch (error) {
