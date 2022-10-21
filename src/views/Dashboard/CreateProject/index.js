@@ -93,13 +93,11 @@ function CreateProject() {
         await baseAxios.post("/projects/create", {
           signature: user.signature,
           name: title,
-          creator_address: user.address,
+          creator: user.address,
           short_description: shortDescription,
           long_description: longDescription,
           subjects: subjects,
-          reward_requested: rewardRequested,
           days_to_complete: daysToComplete,
-          collateral: 0,
           deliverables: deliverables,
           mediators: [],
           start_date: dateToTimestamp(startDate)
@@ -179,19 +177,6 @@ function CreateProject() {
           </FormControl>
 
           <Stack spacing={6} direction={["column", "row"]} w={"100%"}>
-            <FormControl id="reward_requested" isRequired>
-              <FormLabel>Reward requested</FormLabel>
-              <Input
-                type="number"
-                placeholder="10000 RE"
-                _placeholder={{ color: "gray.500" }}
-                value={rewardRequested}
-                onChange={(event) =>
-                  setRewardRequested(parseInt(event.target.value))
-                }
-              />
-            </FormControl>
-
             <FormControl id="days_to_complete" isRequired>
               <FormLabel>Days to complete</FormLabel>
               <Input

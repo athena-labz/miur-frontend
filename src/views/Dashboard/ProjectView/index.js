@@ -69,11 +69,11 @@ function ProjectView() {
         // setProject(res.data.project);
         setProject({
           name: res.data.project.name,
-          creatorAddress: res.data.project.creator_address,
+          creatorAddress: res.data.project.creator.address,
           shortDescription: res.data.project.short_description,
           longDescription: res.data.project.long_description,
           subjects: res.data.project.subjects,
-          rewardRequested: res.data.project.reward_requested,
+          mediators: res.data.project.mediators,
           daysToComplete: res.data.project.days_to_complete,
           deliverables: res.data.project.deliverables,
         });
@@ -201,21 +201,7 @@ function ProjectView() {
                           </Text>
                         </Button>
                       </Flex>
-                      <Flex align="center" mb="18px">
-                        <Text
-                          fontSize="md"
-                          color={textColor}
-                          fontWeight="bold"
-                          me="10px"
-                          toolt
-                        >
-                          Rewards Requested:{" "}
-                        </Text>
-                        <Text fontSize="md" color="gray.500" fontWeight="400">
-                          {project.rewardRequested} RE
-                        </Text>
-                      </Flex>
-                      <Flex align="center" mb="18px">
+                      {/* <Flex align="center" mb="18px"> */}
                         <Text
                           fontSize="md"
                           color={textColor}
@@ -227,7 +213,7 @@ function ProjectView() {
                         <Text fontSize="md" color="gray.500" fontWeight="400">
                           {project.daysToComplete}
                         </Text>
-                      </Flex>
+                      {/* </Flex> */}
                     </Flex>
                   </CardBody>
                 </Card>
