@@ -29,6 +29,7 @@ import CardHeader from "components/Card/CardHeader";
 import MultiSelectMenu from "components/MultipleSelect";
 import { WalletSelector } from "components/WalletSelector";
 import { Info } from "components/Info";
+import { Funder } from "components/Funder";
 
 import { useUser } from "../../../contexts/userContext";
 import { useWallet } from "../../../contexts/walletContext";
@@ -91,7 +92,7 @@ function ProjectView() {
   }, []);
 
   async function fundProject(api, projectKey) {
-    console.log("api", api)
+    console.log("api", api);
     const changeAddress = C.Address.from_bytes(
       Buffer.from(await api.getChangeAddress(), "hex")
     ).to_bech32();
@@ -108,9 +109,9 @@ function ProjectView() {
     const txCbor = res.data.transaction_cbor;
 
     const witness = await api.signTx(txCbor);
-    console.log(txCbor)
-    console.log("=======================")
-    console.log(witness)
+    console.log(txCbor);
+    console.log("=======================");
+    console.log(witness);
   }
 
   function truncate(input, length) {
@@ -202,17 +203,17 @@ function ProjectView() {
                         </Button>
                       </Flex>
                       {/* <Flex align="center" mb="18px"> */}
-                        <Text
-                          fontSize="md"
-                          color={textColor}
-                          fontWeight="bold"
-                          me="10px"
-                        >
-                          Days to complete:{" "}
-                        </Text>
-                        <Text fontSize="md" color="gray.500" fontWeight="400">
-                          {project.daysToComplete}
-                        </Text>
+                      <Text
+                        fontSize="md"
+                        color={textColor}
+                        fontWeight="bold"
+                        me="10px"
+                      >
+                        Days to complete:{" "}
+                      </Text>
+                      <Text fontSize="md" color="gray.500" fontWeight="400">
+                        {project.daysToComplete}
+                      </Text>
                       {/* </Flex> */}
                     </Flex>
                   </CardBody>
@@ -284,7 +285,15 @@ function ProjectView() {
                   Raise Accusation
                 </Button>
 
-                <Button
+                {/* I AM HERE!!!!! */}
+
+                <Funder
+                  axios={baseAxios}
+                  fundingAmount={10_000_000}
+                  projectId={params.project_id}
+                />
+
+                {/* <Button
                   bg={"blue.400"}
                   color={"white"}
                   w="full"
@@ -300,7 +309,7 @@ function ProjectView() {
                   }}
                 >
                   Fund Project
-                </Button>
+                </Button> */}
               </Stack>
             </Stack>
           </Flex>
@@ -310,7 +319,7 @@ function ProjectView() {
               connect(wallet)
                 .then(async (result) => {
                   if (result.success === true) {
-                    fundProject(result.api, params.project_id)
+                    fundProject(result.api, params.project_id);
                   } else {
                     console.error("Wallet failed while trying to connect!");
                     console.error(result.error);

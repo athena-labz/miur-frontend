@@ -128,6 +128,8 @@ export function UserContextProvider({ children }) {
     return true;
   }
 
+  // async function fundProject ()
+
   async function signUp(axios, api, email) {
     // Check if we already have a saved user in ls with this address
     //   If we do, check if the signature has expired yet
