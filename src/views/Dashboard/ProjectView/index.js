@@ -285,31 +285,11 @@ function ProjectView() {
                   Raise Accusation
                 </Button>
 
-                {/* I AM HERE!!!!! */}
-
                 <Funder
                   axios={baseAxios}
                   fundingAmount={10_000_000}
                   projectId={params.project_id}
                 />
-
-                {/* <Button
-                  bg={"blue.400"}
-                  color={"white"}
-                  w="full"
-                  _hover={{
-                    bg: "blue.500",
-                  }}
-                  onClick={() => {
-                    if (curWallet === null) {
-                      setOpenWalletSelector(true);
-                    } else {
-                      fundProject(curWallet, params.project_id)
-                    }
-                  }}
-                >
-                  Fund Project
-                </Button> */}
               </Stack>
             </Stack>
           </Flex>
