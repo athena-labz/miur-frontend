@@ -43,7 +43,7 @@ const baseAxios = axios.create({
 });
 
 function ProjectView() {
-  const { user } = useUser();
+  const { user, getUser } = useUser();
   const { curWallet, connect } = useWallet();
 
   const history = useHistory();
@@ -60,6 +60,7 @@ function ProjectView() {
   const [infoContent, setInfoContent] = useState(null);
   const [pathAfterInfo, setPathAfterInfo] = useState(null);
   const [openWalletSelector, setOpenWalletSelector] = useState(false);
+  const [showFund, setShowFund] = useState(false);
 
   useEffect(() => {
     (async () => {
@@ -87,6 +88,21 @@ function ProjectView() {
             body: `Project ID ${params.project_id} not found`,
           });
         }
+      }
+    })();
+
+    (async () => {
+      try {
+        const res = await baseAxios.get(
+          `/projects/${params.project_id}/${getUser().address}`
+        );
+        console.log("project user response", res);
+
+        if (!res.data.creator && !res.data.funder) {
+          setShowFund(true);
+        }
+      } catch (error) {
+        console.dir(error);
       }
     })();
   }, []);
@@ -274,7 +290,7 @@ function ProjectView() {
                 </div>
               </Grid>
               <Stack spacing={6} direction={["column", "row"]} w={"100%"}>
-                <Button
+                {/* <Button
                   bg={"red.400"}
                   color={"white"}
                   w="full"
@@ -283,13 +299,17 @@ function ProjectView() {
                   }}
                 >
                   Raise Accusation
-                </Button>
+                </Button> */}
 
-                <Funder
-                  axios={baseAxios}
-                  fundingAmount={10_000_000}
-                  projectId={params.project_id}
-                />
+                {showFund ? (
+                  <Funder
+                    axios={baseAxios}
+                    fundingAmount={10_000_000}
+                    projectId={params.project_id}
+                  />
+                ) : (
+                  <></>
+                )}
               </Stack>
             </Stack>
           </Flex>

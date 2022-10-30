@@ -9,12 +9,8 @@ import { useUser } from "../../contexts/userContext";
 import { useTransaction } from "../../contexts/transactionContext";
 
 import { Button } from "@chakra-ui/react";
- 
-export function Funder({
-  axios,
-  fundingAmount,
-  projectId,
-}) {
+
+export function Funder({ axios, fundingAmount, projectId }) {
   const [openWalletSelector, setOpenWalletSelector] = useState(false);
   const [infoContent, setInfoContent] = useState(null);
 
@@ -40,6 +36,45 @@ export function Funder({
     };
   };
 
+  const createFundingTransaction = async (api) => {
+    const { body, witness } = await getFundTransactionCbor(api);
+    assembleTransaction(api, body, witness)
+      .then(async (txHash) => {
+        try {
+          console.log("Trying to notify backend transaction was submitted!");
+          console.log({
+            address: user.address,
+            transaction_hash: txHash,
+            signature: user.signature,
+          });
+          const res = await axios.post("/transaction/projects/fund/submitted", {
+            address: user.address,
+            transaction_hash: txHash,
+            signature: user.signature,
+          });
+
+          console.log("response from tx submission backend", res);
+        } catch (error) {
+          console.error("Failed to confirm funding transaction as submitted!");
+          console.error(error);
+
+          setInfoContent({
+            header: "Server Error",
+            body: `Failed to notify backend that transaction ${txHash} was submitted`,
+          });
+        }
+      })
+      .catch((error) => {
+        console.error("Failed to assemble transaction");
+        console.error(error);
+
+        setInfoContent({
+          header: "Transaction Error",
+          body: `Failed to create funding transaction`,
+        });
+      });
+  };
+
   return (
     <>
       <Button
@@ -53,8 +88,7 @@ export function Funder({
           if (curWallet === null) {
             setOpenWalletSelector(true);
           } else {
-            const { body, witness } = await getFundTransactionCbor(curWallet);
-            assembleTransaction(curWallet.api, body, witness);
+            createFundingTransaction(curWallet)
           }
         }}
       >
@@ -68,10 +102,7 @@ export function Funder({
               if (result.success === true) {
                 console.log("Wallet connected!");
 
-                const { body, witness } = await getFundTransactionCbor(
-                  result.api
-                );
-                assembleTransaction(result.api, body, witness);
+                createFundingTransaction(result.api)
               } else {
                 console.error("Wallet failed while trying to connect!");
                 console.error(result.error);

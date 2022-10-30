@@ -172,6 +172,7 @@ export function UserContextProvider({ children }) {
       value={{
         isSignedIn,
         user,
+        getUser,
         signIn,
         signUp,
         logout,
