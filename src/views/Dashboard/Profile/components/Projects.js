@@ -46,7 +46,6 @@ const Projects = ({ title, description }) => {
           <ProjectCard
             image={imageArchitect1}
             name={"Project #1"}
-            category={"Modern"}
             description={
               "As Uber works through a huge amount of internal management turmoil."
             }
@@ -55,7 +54,6 @@ const Projects = ({ title, description }) => {
           <ProjectCard
             image={imageArchitect2}
             name={"Project #2"}
-            category={"Scandinavian"}
             description={
               "Music is something that every person has his or her own specific opinion about."
             }
@@ -64,7 +62,6 @@ const Projects = ({ title, description }) => {
           <ProjectCard
             image={imageArchitect3}
             name={"Project #3"}
-            category={"Minimalist"}
             description={
               "Different people have different taste, especially various types of music."
             }

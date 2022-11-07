@@ -11,28 +11,15 @@ import {
 } from "@chakra-ui/react";
 import React from "react";
 
-const ProjectCard = ({ image, name, category, avatars, description }) => {
+const ProjectCard = ({ image, name, avatars, description }) => {
   // Chakra color mode
   const textColor =  "white"
 
   return (
     <Flex direction='column'>
-      <Box mb='20px' position='relative' borderRadius='15px'>
-        <Image src={image} borderRadius='15px' />
-        <Box
-          w='100%'
-          h='100%'
-          position='absolute'
-          top='0'
-          borderRadius='15px'
-          bg='linear-gradient(360deg, rgba(49, 56, 96, 0.16) 0%, rgba(21, 25, 40, 0.88) 100%)'></Box>
-      </Box>
       <Flex direction='column'>
-        <Text fontSize='md' color='gray.500' fontWeight='600' mb='10px'>
+        <Text fontSize='md' color='gray.300' fontWeight='600' mb='10px'>
           {name}
-        </Text>
-        <Text fontSize='xl' color={textColor} fontWeight='bold' mb='10px'>
-          {category}
         </Text>
         <Text fontSize='md' color='gray.500' fontWeight='400' mb='20px'>
           {description}
