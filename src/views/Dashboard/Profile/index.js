@@ -37,7 +37,7 @@ function Profile() {
         backgroundHeader={ProfileBgImage}
         backgroundProfile={bgProfile}
         avatarImage={avatar4}
-        name={user?.address ? shortenAddress(user.address) : "Failed to load user address"}
+        address={user?.address ? shortenAddress(user.address) : "Failed to load user address"}
         email={user?.email ? user.email : "Failed to load user email"}
         tabs={[]}
       />

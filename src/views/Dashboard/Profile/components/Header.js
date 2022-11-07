@@ -7,13 +7,14 @@ import {
   Text,
   useColorModeValue,
 } from "@chakra-ui/react";
-import React from "react";
+import React, { useEffect, useRef } from "react";
+
+import { update as updateJdenticon } from 'jdenticon';
 
 const Header = ({
   backgroundHeader,
   backgroundProfile,
-  avatarImage,
-  name,
+  address,
   email,
   tabs,
 }) => {
@@ -24,6 +25,14 @@ const Header = ({
     "rgba(255, 255, 255, 0.31)"
   );
   const emailColor = "gray.300";
+
+  const icon = useRef();
+
+  useEffect(() => {
+    // console.log(stakeAddress);
+    updateJdenticon(icon.current, address);
+  }, [address]);
+
   return (
     <Box
       mb={{ sm: "205px", md: "75px", xl: "70px" }}
@@ -73,12 +82,22 @@ const Header = ({
             w={{ sm: "100%" }}
             textAlign={{ sm: "center", md: "start" }}
           >
-            <Avatar
+            {/* <Avatar
               me={{ md: "22px" }}
               src={avatarImage}
               w="80px"
               h="80px"
               borderRadius="15px"
+            /> */}
+            <svg
+              // className={styles.profileImg}
+              // me={{ md: "22px" }}
+              data-jdenticon-value={address}
+              ref={icon}
+              width="80px"
+              height="80px"
+              style={{borderRadius: "15px", marginRight: "22px"}}
+            // borderRadius="15px"
             />
             <Flex direction="column" maxWidth="100%" my={{ sm: "14px" }}>
               <Text
@@ -87,7 +106,7 @@ const Header = ({
                 fontWeight="bold"
                 ms={{ sm: "8px", md: "0px" }}
               >
-                {name}
+                {address}
               </Text>
               <Text
                 fontSize={{ sm: "sm", md: "md" }}
@@ -122,7 +141,7 @@ const Header = ({
                     fontWeight="bold"
                     ms="6px"
                   >
-                    {name}
+                    {address}
                   </Text>
                 </Flex>
               </Button>
