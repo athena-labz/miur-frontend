@@ -82,22 +82,12 @@ const Header = ({
             w={{ sm: "100%" }}
             textAlign={{ sm: "center", md: "start" }}
           >
-            {/* <Avatar
-              me={{ md: "22px" }}
-              src={avatarImage}
-              w="80px"
-              h="80px"
-              borderRadius="15px"
-            /> */}
             <svg
-              // className={styles.profileImg}
-              // me={{ md: "22px" }}
               data-jdenticon-value={address}
               ref={icon}
               width="80px"
               height="80px"
-              style={{borderRadius: "15px", marginRight: "22px"}}
-            // borderRadius="15px"
+              style={{ borderRadius: "15px", marginRight: "22px" }}
             />
             <Flex direction="column" maxWidth="100%" my={{ sm: "14px" }}>
               <Text

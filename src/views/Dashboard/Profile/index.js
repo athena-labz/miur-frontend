@@ -8,6 +8,8 @@ import React from "react";
 import Header from "./components/Header";
 import Projects from "./components/Projects";
 
+import axios from "axios";
+
 import { useUser } from "../../../contexts/userContext";
 
 function shortenAddress(address, cutFirst = 15, cutLast = 5) {
@@ -20,6 +22,10 @@ function shortenAddress(address, cutFirst = 15, cutLast = 5) {
     return address;
   }
 }
+
+const baseAxios = axios.create({
+  baseURL: process.env.REACT_APP_BASE_URL,
+});
 
 function Profile() {
   const { user } = useUser();
@@ -41,7 +47,11 @@ function Profile() {
         email={user?.email ? user.email : "Failed to load user email"}
         tabs={[]}
       />
-      <Projects title={"Projects"} description={"Crowdfunding projects created by you"} />
+      <Projects
+        axios={baseAxios}
+        title={"Projects"}
+        description={"Crowdfunding projects created by you"}
+      />
     </Flex>
   );
 }

@@ -11,9 +11,13 @@ import {
 } from "@chakra-ui/react";
 import React from "react";
 
-const ProjectCard = ({ image, name, avatars, description }) => {
+import { useHistory } from "react-router-dom";
+
+const ProjectCard = ({ projectId, name, description }) => {
   // Chakra color mode
   const textColor =  "white"
+
+  const history = useHistory();
 
   return (
     <Flex direction='column'>
@@ -31,14 +35,11 @@ const ProjectCard = ({ image, name, avatars, description }) => {
             minW='110px'
             h='36px'
             fontSize='xs'
-            px='1.5rem'>
+            px='1.5rem'
+            onClick={() => {history.push(`/admin/projects/${projectId}`)}}
+          >
             VIEW PROJECT
           </Button>
-          <AvatarGroup size='xs'>
-            {avatars.map((el, idx) => {
-              return <Avatar src={el} key={idx} />;
-            })}
-          </AvatarGroup>
         </Flex>
       </Flex>
     </Flex>
