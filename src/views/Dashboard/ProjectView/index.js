@@ -71,7 +71,7 @@ function ProjectView() {
         // setProject(res.data.project);
         setProject({
           name: res.data.project.name,
-          creatorAddress: res.data.project.creator.address,
+          creatorAddress: res.data.project.creator.stake_address,
           shortDescription: res.data.project.short_description,
           longDescription: res.data.project.long_description,
           subjects: res.data.project.subjects,
@@ -90,22 +90,26 @@ function ProjectView() {
         }
       }
     })();
-
-    (async () => {
-      try {
-        const res = await baseAxios.get(
-          `/projects/${params.project_id}/${getUser().address}`
-        );
-        console.log("project user response", res);
-
-        if (!res.data.creator && !res.data.funder) {
-          setShowFund(true);
-        }
-      } catch (error) {
-        console.dir(error);
-      }
-    })();
   }, []);
+
+  useEffect(() => {
+    if (user) {
+      (async () => {
+        try {
+          const res = await baseAxios.get(
+            `/projects/${params.project_id}/${user.stakeAddress}`
+          );
+          console.log("project user response", res);
+
+          if (!res.data.creator && !res.data.funder) {
+            setShowFund(true);
+          }
+        } catch (error) {
+          console.dir(error);
+        }
+      })();
+    }
+  }, [user])
 
   async function fundProject(api, projectKey) {
     console.log("api", api);
@@ -301,7 +305,7 @@ function ProjectView() {
                   Raise Accusation
                 </Button> */}
 
-                {showFund ? (
+                {showFund && process.env.REACT_APP_BLOCK_FUND?.toLocaleLowerCase() !== "true" ? (
                   <Funder
                     axios={baseAxios}
                     fundingAmount={10_000_000}

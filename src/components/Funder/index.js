@@ -22,10 +22,11 @@ export function Funder({ axios, fundingAmount, projectId }) {
     const utxos = await api.getUtxos();
 
     const res = await axios.post("/transaction/projects/fund", {
-      registered_address: user.address,
+      stake_address: user.stakeAddress,
       funding_utxos: utxos,
       funding_amount: fundingAmount,
       project_id: projectId,
+      signature: user.signature
     });
 
     console.log("res", res);
@@ -43,12 +44,12 @@ export function Funder({ axios, fundingAmount, projectId }) {
         try {
           console.log("Trying to notify backend transaction was submitted!");
           console.log({
-            address: user.address,
+            stake_address: user.stake_address,
             transaction_hash: txHash,
             signature: user.signature,
           });
           const res = await axios.post("/transaction/projects/fund/submitted", {
-            address: user.address,
+            stake_address: user.stake_address,
             transaction_hash: txHash,
             signature: user.signature,
           });

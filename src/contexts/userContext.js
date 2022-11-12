@@ -18,7 +18,7 @@ export const UserContext_ = createContext({});
 export function UserContextProvider({ children }) {
   const toast = useToast();
 
-  const [user, setUser] = useState({isSignedIn: false});
+  const [user, setUser] = useState({ isSignedIn: false });
 
   useEffect(() => {
     setUser(getUser());
@@ -35,14 +35,16 @@ export function UserContextProvider({ children }) {
   }
 
   function updateUser(
-    address,
+    stakeAddress,
+    paymentAddress,
     email,
     signature,
     timestamp,
     isSignedIn
   ) {
     const user = {
-      address,
+      stakeAddress,
+      paymentAddress,
       email,
       signature,
       timestamp,
@@ -71,7 +73,9 @@ export function UserContextProvider({ children }) {
   }
 
   async function makeSignatureProof(api) {
-    const addr = C.Address.from_bytes(
+    const stakeAddress = (await api.getRewardAddresses())[0];
+
+    const paymentAddress = C.Address.from_bytes(
       Buffer.from(await api.getChangeAddress(), "hex")
     ).to_bech32();
 
@@ -79,13 +83,16 @@ export function UserContextProvider({ children }) {
     const timestamp = Math.floor(new Date().getTime() / 1000);
     const signatureMessage = `Athena MIUR | ${timestamp}`;
 
-    const paymentAddress = await api.getChangeAddress();
     const signature = await api.signData(
-      paymentAddress,
+      stakeAddress,
       Buffer.from(signatureMessage).toString("hex")
     );
 
-    return { signature, timestamp, address: addr };
+    return {
+      signature, timestamp, paymentAddress, stakeAddress: C.Address.from_bytes(
+        Buffer.from(stakeAddress, 'hex')
+      ).to_bech32()
+    };
   }
 
   async function signIn(axios, api) {
@@ -93,16 +100,16 @@ export function UserContextProvider({ children }) {
 
     if (user === null) {
       try {
-        const address = C.Address.from_bytes(
-          Buffer.from(await api.getChangeAddress(), "hex")
+        const stakeAddress = C.Address.from_bytes(
+          Buffer.from((await api.getRewardAddresses())[0], "hex")
         ).to_bech32();
 
-        const response = await axios.get(`/user/${address}`);
+        const response = await axios.get(`/user/${stakeAddress}`);
         const { email } = response.data;
 
-        const { signature, timestamp } = await makeSignatureProof(api);
+        const { signature, timestamp, paymentAddress } = await makeSignatureProof(api);
 
-        updateUser(address, email, signature, timestamp, true);
+        updateUser(stakeAddress, paymentAddress, email, signature, timestamp, true);
 
         return true;
       } catch (error) {
@@ -110,13 +117,12 @@ export function UserContextProvider({ children }) {
         if (error.response.data.code === "address-not-found") return false;
         return Promise.reject(error);
       }
-    }
-
-    if (hasSignatureExpired(user.signatureTimestamp)) {
-      const { signature, timestamp, address } = await makeSignatureProof(api);
+    } else if (hasSignatureExpired(user.signatureTimestamp)) {
+      const { signature, timestamp, stakeAddress, paymentAddress } = await makeSignatureProof(api);
 
       updateUser(
-        address,
+        stakeAddress,
+        paymentAddress,
         user.nickname,
         user.email,
         signature,
@@ -146,15 +152,17 @@ export function UserContextProvider({ children }) {
     //     Else (probably 400 email-exists code),
     //       warn user about it return success false
 
-    const { signature, timestamp, address } = await makeSignatureProof(api);
+    const { signature, timestamp, stakeAddress, paymentAddress } = await makeSignatureProof(api);
 
+    console.log("Wow that's incredible", { signature, timestamp, stakeAddress, paymentAddress })
     try {
-      await axios.post(`/register/${address}`, {
-        signature: signature,
-        email: email,
+      await axios.post(`/register/${stakeAddress}`, {
+        signature,
+        email,
+        payment_address: paymentAddress
       });
 
-      updateUser(address, email, signature, timestamp, true);
+      updateUser(stakeAddress, paymentAddress, email, signature, timestamp, true);
 
       return;
     } catch (error) {

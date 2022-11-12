@@ -93,7 +93,7 @@ function CreateProject() {
         await baseAxios.post("/projects/create", {
           signature: user.signature,
           name: title,
-          creator: user.address,
+          creator: user.stakeAddress,
           short_description: shortDescription,
           long_description: longDescription,
           subjects: subjects,

@@ -43,15 +43,26 @@ function Profile() {
         backgroundHeader={ProfileBgImage}
         backgroundProfile={bgProfile}
         avatarImage={avatar4}
-        address={user?.address ? shortenAddress(user.address) : "Failed to load user address"}
+        address={user?.stakeAddress ? shortenAddress(user.stakeAddress) : "Failed to load user address"}
         email={user?.email ? user.email : "Failed to load user email"}
         tabs={[]}
       />
-      <Projects
-        axios={baseAxios}
-        title={"Projects"}
-        description={"Crowdfunding projects created by you"}
-      />
+      {user?.stakeAddress ? (
+        <>
+          <Projects
+            axios={baseAxios}
+            title={"Created Projects"}
+            description={"Crowdfunding projects created by you"}
+            creator={user.stakeAddress}
+          />
+          <Projects
+            axios={baseAxios}
+            title={"Funded Projects"}
+            description={"Crowdfunding projects being funded by you"}
+            funder={user.stakeAddress}
+          />
+        </>
+      ) : (<>Loading</>)}
     </Flex>
   );
 }
