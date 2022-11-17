@@ -63,7 +63,6 @@ function CreateProject() {
   const [shortDescription, setShortDescription] = useState("");
   const [longDescription, setLongDescription] = useState("");
   const [subjects, setSubjects] = useState([]);
-  const [rewardRequested, setRewardRequested] = useState(50_000);
   const [daysToComplete, setDaysToComplete] = useState(30);
   const [deliverables, setDeliverables] = useState([""]);
   const [startDate, setStartDate] = useState(currentDate());
@@ -173,6 +172,7 @@ function CreateProject() {
               label="Selected Subjects"
               options={options}
               onChange={(subjects) => setSubjects(subjects)}
+              addOptionInput={true}
             />
           </FormControl>
 

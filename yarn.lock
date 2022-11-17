@@ -4408,6 +4408,13 @@
   "resolved" "https://registry.npmjs.org/caniuse-lite/-/caniuse-lite-1.0.30001367.tgz"
   "version" "1.0.30001367"
 
+"canvas-renderer@~2.2.0":
+  "integrity" "sha512-RrBgVL5qCEDIXpJ6NrzyRNoTnXxYarqm/cS/W6ERhUJts5UQtt/XPEosGN3rqUkZ4fjBArlnCbsISJ+KCFnIAg=="
+  "resolved" "https://registry.npmjs.org/canvas-renderer/-/canvas-renderer-2.2.1.tgz"
+  "version" "2.2.1"
+  dependencies:
+    "@types/node" "*"
+
 "case-sensitive-paths-webpack-plugin@^2.4.0":
   "integrity" "sha512-roIFONhcxog0JSSWbvVAh3OocukmSgpqOH6YpMkCvav/ySIV3JKg4Dc8vYtQjYi/UxpNE36r/9v+VqTQqgkYmw=="
   "resolved" "https://registry.npmjs.org/case-sensitive-paths-webpack-plugin/-/case-sensitive-paths-webpack-plugin-2.4.0.tgz"
@@ -8194,6 +8201,13 @@
     "chalk" "^4.0.2"
     "filelist" "^1.0.1"
     "minimatch" "^3.0.4"
+
+"jdenticon@^3.2.0":
+  "integrity" "sha512-z6Iq3fTODUMSOiR2nNYrqigS6Y0GvdXfyQWrUby7htDHvX7GNEwaWR4hcaL+FmhEgBe08Xkup/BKxXQhDJByPA=="
+  "resolved" "https://registry.npmjs.org/jdenticon/-/jdenticon-3.2.0.tgz"
+  "version" "3.2.0"
+  dependencies:
+    "canvas-renderer" "~2.2.0"
 
 "jest-changed-files@^27.5.1":
   "integrity" "sha512-buBLMiByfWGCoMsLLzGUUSpAmIAGnbR2KJoMN10ziLhOLvP4e0SlypHnAel8iqQXTrcbmfEY9sSqae5sgUsTvw=="
