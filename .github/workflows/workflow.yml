@@ -18,6 +18,9 @@ jobs:
       - run: npm run build
         env:
           CI: false
+          REACT_APP_BASE_URL: http://209.145.61.113:8080
+          REACT_APP_SIGNATURE_TIMESTAMP: 86400
+          REACT_APP_BLOCK_FUND: true
       - uses: jakejarvis/s3-sync-action@master
         with:
           args: --acl public-read --follow-symlinks --delete
