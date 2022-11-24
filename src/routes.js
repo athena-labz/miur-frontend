@@ -7,6 +7,8 @@ import Profile from "views/Dashboard/Profile";
 import ProjectView from "views/Dashboard/ProjectView";
 import { ArrowBackIcon } from "@chakra-ui/icons";
 
+import Questions from "views/Questions";
+
 import {
   HomeIcon,
   StatsIcon,
@@ -60,6 +62,15 @@ var dashRoutes = [
     icon: <ArrowBackIcon color="inherit" />,
     secondaryNavbar: true,
     component: ProjectView,
+    layout: "/admin",
+  },
+  {
+    path: "/questions",
+    name: "question",
+    notSideBar: true,
+    icon: <ArrowBackIcon color="inherit" />,
+    secondaryNavbar: true,
+    component: Questions,
     layout: "/admin",
   },
 ];

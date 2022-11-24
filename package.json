@@ -40,6 +40,7 @@
     "react-swipeable-views": "0.14.0",
     "react-table": "7.7.0",
     "react-tagsinput": "3.19.0",
+    "react-toastify": "^9.1.1",
     "stylis": "^4.0.13",
     "stylis-plugin-rtl": "^2.1.1"
   },
@@ -66,7 +67,9 @@
     "eslint-plugin-prettier": "3.4.0",
     "gulp": "4.0.2",
     "gulp-append-prepend": "1.0.9",
-    "prettier": "2.2.1"
+    "postcss": "^8.4.19",
+    "prettier": "2.2.1",
+    "tailwind": "^4.0.0"
   },
   "browserslist": {
     "production": [
