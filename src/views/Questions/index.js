@@ -1,11 +1,20 @@
 import React, { useState, useEffect } from "react";
+import { useParams, useHistory } from "react-router-dom";
 
 import { toast } from "react-toastify";
 
 import Question from "./components/Question";
 
+import { useUser } from "../../contexts/userContext";
+
 import "react-toastify/dist/ReactToastify.css";
 import "./index.css";
+
+import axios from "axios";
+
+const baseAxios = axios.create({
+  baseURL: process.env.REACT_APP_BASE_URL,
+});
 
 const successToast = (message) => {
   toast.success(message, {
@@ -48,15 +57,13 @@ const getRandomIndex = (length, except) => {
 };
 
 const Questions = () => {
+  const [loading, setLoading] = useState(true);
+  const [quizId, setQuizId] = useState(null);
   const [display, setDisplay] = useState(null);
   const [currentQuestion, setCurrentQuestion] = useState(0);
+  const [questions, setQuestions] = useState(null);
   const [answer, setAnswer] = useState(0);
-  const [options, setOptions] = useState({
-    0: "a) 829.8 m",
-    1: "b) 826.8 m",
-    2: "c) 828.8 m",
-    3: "d) 824.8 m",
-  });
+  const [options, setOptions] = useState(null);
   const [powerUps, setPowerUps] = useState([
     {
       ...createPowerUp("Get Tip"),
@@ -77,6 +84,40 @@ const Questions = () => {
   ]);
   const [powerUpsBlocked, setPowerUpsBlocked] = useState(false);
 
+  const params = useParams();
+  const history = useHistory();
+
+  const { user } = useUser();
+
+  const parseQuestionsToQuestion = (questions, currentQuestion) => {
+    return questions[currentQuestion]["question"];
+  };
+
+  const parseQuestionsToOptions = (questions, currentQuestion) => {
+    let options = {};
+    questions[currentQuestion]["answers"].forEach((option, idx) => {
+      options[idx] = option;
+    });
+
+    return options;
+  };
+
+  const reloadValues = async () => {
+    const res = await baseAxios.get(`/quiz/assignment/${params.question_id}`);
+
+    const { current_question, questions, quiz_id } = res.data;
+
+    setQuizId(quiz_id);
+    setQuestions(questions);
+    setCurrentQuestion(current_question);
+
+    setLoading(false);
+  };
+
+  useEffect(() => {
+    reloadValues();
+  }, []);
+
   const getPercentages = () => ({
     0: 0.4,
     1: 0.3,
@@ -84,14 +125,54 @@ const Questions = () => {
     3: 0.2,
   });
 
-  const onAnswer = (attemptedAnswer) => {
-    if (parseInt(attemptedAnswer) === answer) {
-      console.log("You Win");
-      successToast("Congratulation you give the right answer!");
+  const onAnswer = async (attemptedAnswer) => {
+    console.log("Attempting answer", user);
+    const res = await baseAxios.post(`/quiz/attempt/${quizId}`, {
+      stake_address: user.stakeAddress,
+      signature: user.signature,
+      answer: parseInt(attemptedAnswer),
+    });
+
+    // right answer
+    // state
+    // current_question
+    // remaining_attempts
+
+    console.log(res.data);
+
+    if (res.data.right_answer === true) {
+      if (res.data.state === "completed_success") {
+        setLoading(true);
+
+        successToast("Congratulations, you win the quiz!");
+        history.push("/admin/profile");
+      } else {
+        // setLoading(true);
+        successToast("Awesome, that was the right answer!");
+        setCurrentQuestion(currentQuestion + 1);
+      }
     } else {
-      console.log("You loose");
-      failureToast("You selected the wrong answer!");
+      if (res.data.state === "completed_failure") {
+        setLoading(true);
+
+        failureToast(
+          "Oh no, this was your last attempt! You'll have to try another quiz later."
+        );
+        history.push("/admin/profile");
+      } else {
+        failureToast(
+          `Woops, that was the wrong answer, you have ${res.data.remaining_attempts} more tries`
+        );
+      }
     }
+
+    // if (parseInt(attemptedAnswer) === answer) {
+    //   console.log("You Win");
+    //   successToast("Congratulation you give the right answer!");
+    // } else {
+    //   console.log("You loose");
+    //   failureToast("You selected the wrong answer!");
+    // }
   };
 
   const onSkip = () => {
@@ -174,14 +255,27 @@ const Questions = () => {
   };
 
   return (
-    <Question
-      question="What is the height of Burj Al Khalifa?"
-      options={options}
-      powerUps={powerUps}
-      powerUpsDisabled={powerUpsBlocked}
-      onAnswer={onAnswer}
-      extraDisplay={display}
-    />
+    <>
+      {loading ? (
+        <div className="loader-container">
+          <div className="lds-ripple">
+            <div></div>
+            <div></div>
+          </div>
+        </div>
+      ) : (
+        <>
+          <Question
+            question={parseQuestionsToQuestion(questions, currentQuestion)}
+            options={parseQuestionsToOptions(questions, currentQuestion)}
+            powerUps={powerUps}
+            powerUpsDisabled={powerUpsBlocked}
+            onAnswer={onAnswer}
+            extraDisplay={display}
+          />
+        </>
+      )}
+    </>
   );
 };
 

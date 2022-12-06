@@ -5,10 +5,14 @@ import { WalletContextProvider } from "contexts/walletContext";
 import { TransactionContextProvider } from "contexts/transactionContext";
 import App from "app";
 
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 ReactDOM.render(
   <WalletContextProvider>
     <UserContextProvider>
       <TransactionContextProvider>
+        <ToastContainer />
         <App />
       </TransactionContextProvider>
     </UserContextProvider>

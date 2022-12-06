@@ -65,7 +65,7 @@ var dashRoutes = [
     layout: "/admin",
   },
   {
-    path: "/questions",
+    path: "/questions/:question_id",
     name: "question",
     notSideBar: true,
     icon: <ArrowBackIcon color="inherit" />,
