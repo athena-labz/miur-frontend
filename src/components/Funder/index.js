@@ -15,7 +15,7 @@ export function Funder({ axios, fundingAmount, projectId }) {
   const [infoContent, setInfoContent] = useState(null);
 
   const { connect, curWallet, getWallets } = useWallet();
-  const { user } = useUser();
+  const { user, getStakeAddress } = useUser();
   const { assembleTransaction } = useTransaction();
 
   const getFundTransactionCbor = async (api) => {
@@ -39,17 +39,19 @@ export function Funder({ axios, fundingAmount, projectId }) {
 
   const createFundingTransaction = async (api) => {
     const { body, witness } = await getFundTransactionCbor(api);
+    const stakeAddress = await getStakeAddress(api);
+
     assembleTransaction(api, body, witness)
       .then(async (txHash) => {
         try {
           console.log("Trying to notify backend transaction was submitted!");
           console.log({
-            stake_address: user.stake_address,
+            stake_address: stakeAddress,
             transaction_hash: txHash,
             signature: user.signature,
           });
           const res = await axios.post("/transaction/projects/fund/submitted", {
-            stake_address: user.stake_address,
+            stake_address: stakeAddress,
             transaction_hash: txHash,
             signature: user.signature,
           });

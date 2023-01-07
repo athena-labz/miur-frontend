@@ -24,6 +24,12 @@ export function UserContextProvider({ children }) {
     setUser(getUser());
   }, []);
 
+  async function getStakeAddress(api) {
+    return C.Address.from_bytes(
+      Buffer.from((await api.getRewardAddresses())[0], "hex")
+    ).to_bech32();
+  }
+
   function getUser() {
     const user = localStorage.getItem("user");
 
@@ -184,6 +190,7 @@ export function UserContextProvider({ children }) {
         signIn,
         signUp,
         logout,
+        getStakeAddress
       }}
     >
       {children}

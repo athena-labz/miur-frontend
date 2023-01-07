@@ -61,6 +61,7 @@ function ProjectView() {
   const [pathAfterInfo, setPathAfterInfo] = useState(null);
   const [openWalletSelector, setOpenWalletSelector] = useState(false);
   const [showFund, setShowFund] = useState(false);
+  const [showAlreadyFunded, setShowAlreadyFunded] = useState(false);
 
   useEffect(() => {
     (async () => {
@@ -104,12 +105,18 @@ function ProjectView() {
           if (!res.data.creator && !res.data.funder) {
             setShowFund(true);
           }
+
+          if (res.data.funder) {
+            setShowAlreadyFunded(true);
+          } else {
+            setShowAlreadyFunded(false);
+          }
         } catch (error) {
           console.dir(error);
         }
       })();
     }
-  }, [user])
+  }, [user]);
 
   async function fundProject(api, projectKey) {
     console.log("api", api);
@@ -305,12 +312,22 @@ function ProjectView() {
                   Raise Accusation
                 </Button> */}
 
-                {showFund && process.env.REACT_APP_BLOCK_FUND?.toLocaleLowerCase() !== "true" ? (
+                {showFund &&
+                process.env.REACT_APP_BLOCK_FUND?.toLocaleLowerCase() !==
+                  "true" ? (
                   <Funder
                     axios={baseAxios}
                     fundingAmount={10_000_000}
                     projectId={params.project_id}
                   />
+                ) : showAlreadyFunded ? (
+                  <Button
+                    bg={"gray.600"}
+                    color={"white"}
+                    w="full"
+                  >
+                    Project Already Funded By You
+                  </Button>
                 ) : (
                   <></>
                 )}
