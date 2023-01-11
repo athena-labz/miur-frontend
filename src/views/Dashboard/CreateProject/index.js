@@ -57,7 +57,7 @@ function CreateProject() {
     "linear-gradient(112.83deg, rgba(255, 255, 255, 0.21) 0%, rgba(255, 255, 255, 0) 110.84%)"
   );
 
-  const options = ["Physics", "Math", "Turism", "Programming"];
+  const options = ["Physics", "Math", "Tourism", "Programming"];
 
   const [title, setTitle] = useState("");
   const [shortDescription, setShortDescription] = useState("");

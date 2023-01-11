@@ -4,7 +4,33 @@ import { Buffer } from "buffer";
 
 export const TransactionContext_ = createContext({});
 
+const fromHex = (hex) => Buffer.from(hex, "hex");
+const toHex = (bytes) => Buffer.from(bytes).toString("hex");
+
 export const TransactionContextProvider = ({ children }) => {
+  const getValueCBOR = (lovelace, asset, amount) => {
+    const policyId = asset.slice(0, 56);
+    const assetName = asset.slice(56);
+    const scriptHash = C.ScriptHash.from_bytes(fromHex(policyId));
+
+    const multiAssets = C.MultiAsset.new();
+    const assets = C.Assets.new();
+
+    assets.insert(
+      C.AssetName.new(fromHex(assetName)),
+      C.BigNum.from_str(amount.toString())
+    );
+    multiAssets.insert(scriptHash, assets);
+
+    const value = C.Value.new_from_assets(multiAssets);
+    value.set_coin(C.BigNum.from_str(lovelace.toString()));
+
+    console.log("value")
+    console.log(value.to_json())
+
+    return toHex(value.to_bytes());
+  };
+
   const assembleTransaction = async (
     walletApi,
     txBodyCbor,
@@ -51,14 +77,12 @@ export const TransactionContextProvider = ({ children }) => {
   };
 
   return (
-    <TransactionContext_.Provider
-      value={{ assembleTransaction }}
-    >
+    <TransactionContext_.Provider value={{ assembleTransaction, getValueCBOR }}>
       {children}
     </TransactionContext_.Provider>
   );
 };
 
 export const useTransaction = () => {
-    return useContext(TransactionContext_);
+  return useContext(TransactionContext_);
 };

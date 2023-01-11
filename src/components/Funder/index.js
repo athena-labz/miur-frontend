@@ -8,25 +8,34 @@ import { useWallet } from "../../contexts/walletContext";
 import { useUser } from "../../contexts/userContext";
 import { useTransaction } from "../../contexts/transactionContext";
 
-import { Button } from "@chakra-ui/react";
+import { Button, Stack, Input, FormControl, FormLabel } from "@chakra-ui/react";
 
-export function Funder({ axios, fundingAmount, projectId }) {
+export function Funder({ axios, projectId }) {
   const [openWalletSelector, setOpenWalletSelector] = useState(false);
   const [infoContent, setInfoContent] = useState(null);
+  const [fundingAmount, setFundingAmount] = useState(10_000_000);
 
   const { connect, curWallet, getWallets } = useWallet();
   const { user, getStakeAddress } = useUser();
-  const { assembleTransaction } = useTransaction();
+  const { assembleTransaction, getValueCBOR } = useTransaction();
 
-  const getFundTransactionCbor = async (api) => {
-    const utxos = await api.getUtxos();
+  const getFundTransactionCbor = async (api, amount) => {
+    if (!amount) {
+      console.error(`invalid funding amount ${amount}`);
+    }
+
+    const asset = process.env.REACT_APP_FUNDING_ASSET;
+    const lovelace = 2_000_000;
+
+    const value_cbor = getValueCBOR(lovelace, asset, amount);
+    const utxos = await api.getUtxos(value_cbor);
 
     const res = await axios.post("/transaction/projects/fund", {
       stake_address: user.stakeAddress,
       funding_utxos: utxos,
-      funding_amount: fundingAmount,
+      funding_amount: amount,
       project_id: projectId,
-      signature: user.signature
+      signature: user.signature,
     });
 
     console.log("res", res);
@@ -38,7 +47,7 @@ export function Funder({ axios, fundingAmount, projectId }) {
   };
 
   const createFundingTransaction = async (api) => {
-    const { body, witness } = await getFundTransactionCbor(api);
+    const { body, witness } = await getFundTransactionCbor(api, fundingAmount);
     const stakeAddress = await getStakeAddress(api);
 
     assembleTransaction(api, body, witness)
@@ -80,23 +89,34 @@ export function Funder({ axios, fundingAmount, projectId }) {
 
   return (
     <>
-      <Button
-        bg={"blue.400"}
-        color={"white"}
-        w="full"
-        _hover={{
-          bg: "blue.500",
-        }}
-        onClick={async () => {
-          if (curWallet === null) {
-            setOpenWalletSelector(true);
-          } else {
-            createFundingTransaction(curWallet)
-          }
-        }}
-      >
-        Fund Project
-      </Button>
+      <Stack spacing={6} direction={["column", "row"]} w={"100%"}>
+        <FormControl id="funding_amount">
+          <FormLabel>Funding Amount</FormLabel>
+          <Input
+            _placeholder={{ color: "gray.500" }}
+            value={fundingAmount}
+            onChange={(event) => setFundingAmount(parseInt(event.target.value))}
+            type="number"
+          />
+        </FormControl>
+        <Button
+          bg={"blue.400"}
+          color={"white"}
+          w="full"
+          _hover={{
+            bg: "blue.500",
+          }}
+          onClick={async () => {
+            if (curWallet === null) {
+              setOpenWalletSelector(true);
+            } else {
+              createFundingTransaction(curWallet);
+            }
+          }}
+        >
+          Fund Project
+        </Button>
+      </Stack>
       <WalletSelector
         isOpen={openWalletSelector}
         onSelect={async (wallet) => {
@@ -105,7 +125,7 @@ export function Funder({ axios, fundingAmount, projectId }) {
               if (result.success === true) {
                 console.log("Wallet connected!");
 
-                createFundingTransaction(result.api)
+                createFundingTransaction(result.api);
               } else {
                 console.error("Wallet failed while trying to connect!");
                 console.error(result.error);

@@ -317,7 +317,6 @@ function ProjectView() {
                   "true" ? (
                   <Funder
                     axios={baseAxios}
-                    fundingAmount={10_000_000}
                     projectId={params.project_id}
                   />
                 ) : showAlreadyFunded ? (
