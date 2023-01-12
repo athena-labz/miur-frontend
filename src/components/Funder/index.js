@@ -89,7 +89,16 @@ export function Funder({ axios, projectId }) {
 
   return (
     <>
-      <Stack spacing={6} direction={["column", "row"]} w={"100%"}>
+      <Stack
+        spacing={6}
+        direction={["column", "row"]}
+        w={"100%"}
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
         <FormControl id="funding_amount">
           <FormLabel>Funding Amount</FormLabel>
           <Input
