@@ -20,7 +20,8 @@ jobs:
           CI: false
           REACT_APP_BASE_URL: https://api.athenacrowdfunding.com
           REACT_APP_SIGNATURE_TIMESTAMP: 86400
-          REACT_APP_BLOCK_FUND: true
+          REACT_APP_BLOCK_FUND: false
+          REACT_APP_FUNDING_ASSET: 764b12be539b176a50a9156faf4e7b03302470e7b19067c525b706cd535445494e
   
       - name: S3 Sync
         uses: jakejarvis/s3-sync-action@master
