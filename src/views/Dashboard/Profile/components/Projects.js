@@ -85,7 +85,7 @@ const Projects = ({ axios, title, description, creator, funder }) => {
         </Flex>
       </CardHeader>
       <CardBody px='5px'>
-        {creator && projects?.length > 0 ? (
+        {projects?.length > 0 ? (
           <Grid
             templateColumns={{ sm: "1fr", md: "1fr 1fr", xl: "repeat(4, 1fr)" }}
             templateRows={{ sm: "1fr 1fr 1fr auto", md: "1fr 1fr", xl: "1fr" }}
