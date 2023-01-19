@@ -10,7 +10,7 @@ import {
   Tooltip,
 } from "@chakra-ui/react";
 
-const UsersTable = ({ users }) => {
+const UsersTable = ({ users, page }) => {
   return (
     <Table>
       <Thead>
@@ -27,7 +27,7 @@ const UsersTable = ({ users }) => {
         </Tr>
       </Thead>
       <Tbody>
-        {users.map((user) => (
+        {users[page].map((user) => (
           <Tr key={user.email}>
             <Td>
               <Text>{user.email}</Text>

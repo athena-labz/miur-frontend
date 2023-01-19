@@ -21,7 +21,7 @@ const baseAxios = axios.create({
 });
 
 const UserContainer = () => {
-  const [users, setUsers] = useState(null);
+  const [users, setUsers] = useState({});
   const [loading, setLoading] = useState(true);
 
   const [currentPage, setCurrentPage] = useState(1);
@@ -31,8 +31,8 @@ const UserContainer = () => {
   const getUsers = async () => {
     try {
       const response = await baseAxios.get(`/users?page=${currentPage}`);
-      console.log(response);
-      setUsers(response.data.users);
+
+      setUsers({ ...users, [currentPage]: response.data.users });
       setMaxPage(response.data.pages);
       setLoading(false);
     } catch (error) {
@@ -44,6 +44,10 @@ const UserContainer = () => {
     getUsers();
   }, [currentPage]);
 
+  useEffect(() => {
+    console.log(users);
+  }, [users]);
+
   return (
     <Card p="16px" my="24px">
       <CardHeader p="12px 5px" mb="12px">
@@ -54,13 +58,20 @@ const UserContainer = () => {
         </Flex>
       </CardHeader>
       <CardBody px="5px">
-        {loading ? <>Loading</> : <UsersTable users={users} />}
+        {loading ? (
+          <>Loading</>
+        ) : (
+          <UsersTable page={currentPage} users={users} />
+        )}
       </CardBody>
       <CardFooter style={{ marginTop: "1rem" }}>
         <PageSelector
           maxPage={maxPage}
           initialPage={1}
-          onPageChange={setCurrentPage}
+          onPageChange={(page) => {
+            setLoading(true);
+            setCurrentPage(page);
+          }}
         />
       </CardFooter>
     </Card>
