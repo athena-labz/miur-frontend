@@ -29,6 +29,7 @@ export default function Dashboard() {
             projectKey: project.project_id,
             name: project.name,
             description: project.short_description,
+            funders: project.funders,
             members: [],
             budget: project.reward_requested,
           };

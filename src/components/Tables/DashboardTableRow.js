@@ -18,7 +18,7 @@ function truncate(input, length) {
 }
 
 function DashboardTableRow(props) {
-  const { projectKey, name, description, members, budget } = props;
+  const { projectKey, name, description, members, funders, budget } = props;
   const textColor = "white";
 
   const history = useHistory();
@@ -46,7 +46,7 @@ function DashboardTableRow(props) {
 
       <Td>
         <Text fontSize="md" color={textColor} fontWeight="bold" pb=".5rem">
-          {members.length}
+          {funders.length}
         </Text>
       </Td>
 

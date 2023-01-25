@@ -117,6 +117,7 @@ const Projects = ({ title, amount, captions, data }) => {
                 projectKey={row.projectKey}
                 name={row.name}
                 description={row.description}
+                funders={row.funders}
                 members={row.members}
                 budget={row.budget}
                 progression={row.progression}
