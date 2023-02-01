@@ -59,7 +59,7 @@ export function Funder({ axios, fundeePaymentAddress, projectId }) {
       api,
       fundeePaymentAddress,
       process.env.REACT_APP_MEDIATOR_POLICY,
-      0,
+      23_158_608,
       process.env.REACT_APP_FUNDING_ASSET,
       fundingAmount
     )
