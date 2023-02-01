@@ -10,48 +10,62 @@ import { useTransaction } from "../../contexts/transactionContext";
 
 import { Button, Stack, Input, FormControl, FormLabel } from "@chakra-ui/react";
 
-export function Funder({ axios, projectId }) {
+export function Funder({ axios, fundeePaymentAddress, projectId }) {
   const [openWalletSelector, setOpenWalletSelector] = useState(false);
   const [infoContent, setInfoContent] = useState(null);
   const [fundingAmount, setFundingAmount] = useState(10_000_000);
+  const [funding, setFunding] = useState(false);
 
   const { connect, curWallet, getWallets } = useWallet();
   const { user, getStakeAddress } = useUser();
-  const { assembleTransaction, getValueCBOR } = useTransaction();
+  const { assembleTransaction, getValueCBOR, lockUtxo } = useTransaction();
 
-  const getFundTransactionCbor = async (api, amount) => {
-    if (!amount) {
-      console.error(`invalid funding amount ${amount}`);
-    }
+  // const getFundTransactionCbor = async (api, amount) => {
+  //   if (!amount) {
+  //     console.error(`invalid funding amount ${amount}`);
+  //   }
 
-    const asset = process.env.REACT_APP_FUNDING_ASSET;
-    const lovelace = 2_000_000;
+  //   const asset = process.env.REACT_APP_FUNDING_ASSET;
+  //   const lovelace = 2_000_000;
 
-    const value_cbor = getValueCBOR(lovelace, asset, amount);
-    const utxos = await api.getUtxos(value_cbor);
+  //   const value_cbor = getValueCBOR(lovelace, asset, amount);
+  //   const utxos = await api.getUtxos(value_cbor);
 
-    const res = await axios.post("/transaction/projects/fund", {
-      stake_address: user.stakeAddress,
-      funding_utxos: utxos,
-      funding_amount: amount,
-      project_id: projectId,
-      signature: user.signature,
-    });
+  //   const res = await axios.post("/transaction/projects/fund", {
+  //     stake_address: user.stakeAddress,
+  //     funding_utxos: utxos,
+  //     funding_amount: amount,
+  //     project_id: projectId,
+  //     signature: user.signature,
+  //   });
 
-    console.log("res", res);
+  //   console.log("res", res);
 
-    return {
-      body: res.data.transaction_cbor,
-      witness: res.data.witness_cbor,
-    };
-  };
+  //   return {
+  //     body: res.data.transaction_cbor,
+  //     witness: res.data.witness_cbor,
+  //   };
+  // };
 
   const createFundingTransaction = async (api) => {
-    const { body, witness } = await getFundTransactionCbor(api, fundingAmount);
-    const stakeAddress = await getStakeAddress(api);
+    if (funding) {
+      console.error("Already funding project!");
+      return;
+    } else {
+      setFunding(true);
+    }
 
-    assembleTransaction(api, body, witness)
+    lockUtxo(
+      api,
+      fundeePaymentAddress,
+      process.env.REACT_APP_MEDIATOR_POLICY,
+      0,
+      process.env.REACT_APP_FUNDING_ASSET,
+      fundingAmount
+    )
       .then(async (txHash) => {
+        const stakeAddress = await getStakeAddress(api);
+
         try {
           console.log("Trying to notify backend transaction was submitted!");
           console.log({
@@ -59,32 +73,82 @@ export function Funder({ axios, projectId }) {
             transaction_hash: txHash,
             signature: user.signature,
           });
+
           const res = await axios.post("/transaction/projects/fund/submitted", {
             stake_address: stakeAddress,
             transaction_hash: txHash,
             signature: user.signature,
+            funding_amount: fundingAmount,
+            project_id: projectId,
           });
 
           console.log("response from tx submission backend", res);
+
+          setInfoContent({
+            header: "Transaction Success",
+            body: `Project was funded successfully with transaction hash ${txHash}`,
+          });
+
+          console.log(txHash);
         } catch (error) {
           console.error("Failed to confirm funding transaction as submitted!");
-          console.error(error);
+          console.dir(error);
 
           setInfoContent({
             header: "Server Error",
             body: `Failed to notify backend that transaction ${txHash} was submitted`,
           });
+
+          setFunding(false);
         }
       })
       .catch((error) => {
         console.error("Failed to assemble transaction");
-        console.error(error);
+        console.dir(error);
 
         setInfoContent({
           header: "Transaction Error",
-          body: `Failed to create funding transaction`,
+          body: `Failed to create funding transaction. Failed with error ${error}. Make sure you are connected to the right wallet and you have enoguh tokens.`,
         });
+
+        setFunding(false);
       });
+
+    // assembleTransaction(api, body, witness)
+    //   .then(async (txHash) => {
+    //     try {
+    //       console.log("Trying to notify backend transaction was submitted!");
+    //       console.log({
+    //         stake_address: stakeAddress,
+    //         transaction_hash: txHash,
+    //         signature: user.signature,
+    //       });
+    //       const res = await axios.post("/transaction/projects/fund/submitted", {
+    //         stake_address: stakeAddress,
+    //         transaction_hash: txHash,
+    //         signature: user.signature,
+    //       });
+
+    //       console.log("response from tx submission backend", res);
+    //     } catch (error) {
+    //       console.error("Failed to confirm funding transaction as submitted!");
+    //       console.error(error);
+
+    //       setInfoContent({
+    //         header: "Server Error",
+    //         body: `Failed to notify backend that transaction ${txHash} was submitted`,
+    //       });
+    //     }
+    //   })
+    //   .catch((error) => {
+    //     console.error("Failed to assemble transaction");
+    //     console.error(error);
+
+    //     setInfoContent({
+    //       header: "Transaction Error",
+    //       body: `Failed to create funding transaction`,
+    //     });
+    //   });
   };
 
   return (
@@ -115,6 +179,7 @@ export function Funder({ axios, projectId }) {
           _hover={{
             bg: "blue.500",
           }}
+          disabled={funding}
           onClick={async () => {
             if (curWallet === null) {
               setOpenWalletSelector(true);

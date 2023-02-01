@@ -2298,6 +2298,33 @@
     "mkdirp" "^1.0.4"
     "rimraf" "^3.0.2"
 
+"@peculiar/asn1-schema@^2.1.6", "@peculiar/asn1-schema@^2.3.0":
+  "integrity" "sha512-6GptMYDMyWBHTUKndHaDsRZUO/XMSgIns2krxcm2L7SEExRHwawFvSwNBhqNPR9HJwv3MruAiF1bhN0we6j6GQ=="
+  "resolved" "https://registry.npmjs.org/@peculiar/asn1-schema/-/asn1-schema-2.3.3.tgz"
+  "version" "2.3.3"
+  dependencies:
+    "asn1js" "^3.0.5"
+    "pvtsutils" "^1.3.2"
+    "tslib" "^2.4.0"
+
+"@peculiar/json-schema@^1.1.12":
+  "integrity" "sha512-coUfuoMeIB7B8/NMekxaDzLhaYmp0HZNPEjYRm9goRou8UZIC3z21s0sL9AWoCw4EG876QyO3kYrc61WNF9B/w=="
+  "resolved" "https://registry.npmjs.org/@peculiar/json-schema/-/json-schema-1.1.12.tgz"
+  "version" "1.1.12"
+  dependencies:
+    "tslib" "^2.0.0"
+
+"@peculiar/webcrypto@^1.4.0":
+  "integrity" "sha512-eK4C6WTNYxoI7JOabMoZICiyqRRtJB220bh0Mbj5RwRycleZf9BPyZoxsTvpP0FpmVS2aS13NKOuh5/tN3sIRw=="
+  "resolved" "https://registry.npmjs.org/@peculiar/webcrypto/-/webcrypto-1.4.1.tgz"
+  "version" "1.4.1"
+  dependencies:
+    "@peculiar/asn1-schema" "^2.3.0"
+    "@peculiar/json-schema" "^1.1.12"
+    "pvtsutils" "^1.3.2"
+    "tslib" "^2.4.1"
+    "webcrypto-core" "^1.7.4"
+
 "@pmmmwh/react-refresh-webpack-plugin@^0.5.3":
   "integrity" "sha512-bcKCAzF0DV2IIROp9ZHkRJa6O4jy7NlnHdWL3GmcUxYWNjLXkK5kfELELwEfSP5hXPfVL/qOGMAROuMQb9GG8Q=="
   "resolved" "https://registry.npmjs.org/@pmmmwh/react-refresh-webpack-plugin/-/react-refresh-webpack-plugin-0.5.7.tgz"
@@ -3790,6 +3817,15 @@
   "integrity" "sha512-6i37w/+EhlWlGUJff3T/Q8u1RGmP5wgbiwYnOnbOqvtrPxT63/sYFyP9RcpxtxGymtfA075IvmOnL7ycNOWl3w=="
   "resolved" "https://registry.npmjs.org/asn1/-/asn1-0.2.3.tgz"
   "version" "0.2.3"
+
+"asn1js@^3.0.1", "asn1js@^3.0.5":
+  "integrity" "sha512-FVnvrKJwpt9LP2lAMl8qZswRNm3T4q9CON+bxldk2iwk3FFpuwhx2FfinyitizWHsVYyaY+y5JzDR0rCMV5yTQ=="
+  "resolved" "https://registry.npmjs.org/asn1js/-/asn1js-3.0.5.tgz"
+  "version" "3.0.5"
+  dependencies:
+    "pvtsutils" "^1.3.2"
+    "pvutils" "^1.1.3"
+    "tslib" "^2.4.0"
 
 "assert-plus@^1.0.0", "assert-plus@1.0.0":
   "integrity" "sha512-NfJ4UzBCcQGLDlQq7nHxH+tv3kyZ0hHQqF5BO6J7tNJeP5do1llPr8dZ8zHonfhAu0PHAdMkSo+8o0wxg9lZWw=="
@@ -9633,12 +9669,14 @@
   dependencies:
     "yallist" "^4.0.0"
 
-"lucid-cardano@^0.3.5":
-  "integrity" "sha512-vrWsTCiSFpolwTXuDRArDGq2Rupi536H6vRM3BllfDtCaT2HX3M48+jzT2hewRt7q8Z7GAl2WylPBUIGgfrQbQ=="
-  "resolved" "https://registry.npmjs.org/lucid-cardano/-/lucid-cardano-0.3.5.tgz"
-  "version" "0.3.5"
+"lucid-cardano@^0.8.8":
+  "integrity" "sha512-6kV54MHXye3FwB9MoSPgJ8npzKDFaUpHo9QlR9VZTFCWXdFuKIUvmPMdBllk/fv/vSf4H3SOYrsbRN+Px3rItg=="
+  "resolved" "https://registry.npmjs.org/lucid-cardano/-/lucid-cardano-0.8.8.tgz"
+  "version" "0.8.8"
   dependencies:
+    "@peculiar/webcrypto" "^1.4.0"
     "node-fetch" "^3.2.3"
+    "ws" "^8.10.0"
 
 "lusca@1.6.1":
   "integrity" "sha512-+JzvUMH/rsE/4XfHdDOl70bip0beRcHSviYATQM0vtls59uVtdn1JMu4iD7ZShBpAmFG8EnaA+PrYG9sECMIOQ=="
@@ -11786,6 +11824,18 @@
   "integrity" "sha512-RofWgt/7fL5wP1Y7fxE7/EmTLzQVnB0ycyibJ0OOHIlJqTNzglYFxVwETOcIoJqJmpDXJ9xImDv+Fq34F/d4Dw=="
   "resolved" "https://registry.npmjs.org/punycode/-/punycode-1.3.2.tgz"
   "version" "1.3.2"
+
+"pvtsutils@^1.3.2":
+  "integrity" "sha512-+Ipe2iNUyrZz+8K/2IOo+kKikdtfhRKzNpQbruF2URmqPtoqAs8g3xS7TJvFF2GcPXjh7DkqMnpVveRFq4PgEQ=="
+  "resolved" "https://registry.npmjs.org/pvtsutils/-/pvtsutils-1.3.2.tgz"
+  "version" "1.3.2"
+  dependencies:
+    "tslib" "^2.4.0"
+
+"pvutils@^1.1.3":
+  "integrity" "sha512-pMpnA0qRdFp32b1sJl1wOJNxZLQ2cbQx+k6tjNtZ8CpvVhNqEPRgivZ2WOUev2YMajecdH7ctUPDvEe87nariQ=="
+  "resolved" "https://registry.npmjs.org/pvutils/-/pvutils-1.1.3.tgz"
+  "version" "1.1.3"
 
 "q@^1.1.2":
   "integrity" "sha512-kV/CThkXo6xyFEZUugw/+pIOywXcDbFYgSct5cT3gqlbkBE1SJdwy6UQoZvodiWF/ckQLZyDE/Bu1M6gVu5lVw=="
@@ -14188,10 +14238,10 @@
   "resolved" "https://registry.npmjs.org/tslib/-/tslib-1.14.1.tgz"
   "version" "1.14.1"
 
-"tslib@^2.0.0", "tslib@^2.0.3", "tslib@^2.1.0":
-  "integrity" "sha512-d6xOpEDfsi2CZVlPQzGeux8XMwLT9hssAsaPYExaQMuYskwb+x1x7J371tWlbBdWHroy99KnVB6qIkUbs5X3UQ=="
-  "resolved" "https://registry.npmjs.org/tslib/-/tslib-2.4.0.tgz"
-  "version" "2.4.0"
+"tslib@^2.0.0", "tslib@^2.0.3", "tslib@^2.1.0", "tslib@^2.4.0", "tslib@^2.4.1":
+  "integrity" "sha512-336iVw3rtn2BUK7ORdIAHTyxHGRIHVReokCR3XjbckJMK7ms8FysBfhLR8IXnAgy7T0PTPNBWKiH514FOW/WSg=="
+  "resolved" "https://registry.npmjs.org/tslib/-/tslib-2.5.0.tgz"
+  "version" "2.5.0"
 
 "tsscmp@^1.0.5":
   "integrity" "sha512-LxhtAkPDTkVCMQjt2h6eBVY28KCjikZqZfMcC15YBeNjkgUpdCfBu5HoiOTDu86v6smE8yOjyEktJ8hlbANHQA=="
@@ -14754,6 +14804,17 @@
   "resolved" "https://registry.npmjs.org/web-streams-polyfill/-/web-streams-polyfill-3.2.1.tgz"
   "version" "3.2.1"
 
+"webcrypto-core@^1.7.4":
+  "integrity" "sha512-gaExY2/3EHQlRNNNVSrbG2Cg94Rutl7fAaKILS1w8ZDhGxdFOaw6EbCfHIxPy9vt/xwp5o0VQAx9aySPF6hU1A=="
+  "resolved" "https://registry.npmjs.org/webcrypto-core/-/webcrypto-core-1.7.5.tgz"
+  "version" "1.7.5"
+  dependencies:
+    "@peculiar/asn1-schema" "^2.1.6"
+    "@peculiar/json-schema" "^1.1.12"
+    "asn1js" "^3.0.1"
+    "pvtsutils" "^1.3.2"
+    "tslib" "^2.4.0"
+
 "webidl-conversions@^4.0.2":
   "integrity" "sha512-YQ+BmxuTgd6UXZW3+ICGfyqRyHXVlD5GtQr5+qjiNW7bF0cqrzX500HVXPBOvgXb5YnzDd+h0zqyv61KUD7+Sg=="
   "resolved" "https://registry.npmjs.org/webidl-conversions/-/webidl-conversions-4.0.2.tgz"
@@ -15220,6 +15281,11 @@
   "integrity" "sha512-F+P9Jil7UiSKSkppIiD94dN07AwvFixvLIj1Og1Rl9GGMuNipJnV9JzjD6XuqmAeiswGvUmNLjr5cFuXwNS77Q=="
   "resolved" "https://registry.npmjs.org/ws/-/ws-7.5.9.tgz"
   "version" "7.5.9"
+
+"ws@^8.10.0":
+  "integrity" "sha512-kU62emKIdKVeEIOIKVegvqpXMSTAMLJozpHZaJNDYqBjzlSYXQGviYwN1osDLJ9av68qHd4a2oSjd7yD4pacig=="
+  "resolved" "https://registry.npmjs.org/ws/-/ws-8.12.0.tgz"
+  "version" "8.12.0"
 
 "ws@^8.4.2":
   "integrity" "sha512-bGy2JzvzkPowEJV++hF07hAD6niYSr0JzBNo/J29WsB57A2r7Wlc1UFcTR9IzrPvuNVO4B8LGqF8qcpsVOhJCA=="

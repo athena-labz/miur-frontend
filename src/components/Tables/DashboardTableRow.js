@@ -7,7 +7,7 @@ import {
   useColorModeValue,
 } from "@chakra-ui/react";
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useHistory } from 'react-router-dom';
 
 function truncate(input, length) {
@@ -21,7 +21,13 @@ function DashboardTableRow(props) {
   const { projectKey, name, description, members, funders, budget } = props;
   const textColor = "white";
 
+  const [actualFunders, setActualFunders] = useState(null);
+
   const history = useHistory();
+
+  useEffect(() => {
+    setActualFunders(funders.filter((funder) => funder.status !== "requested"));
+  }, [funders]);
 
   return (
     <Tr>
@@ -46,7 +52,7 @@ function DashboardTableRow(props) {
 
       <Td>
         <Text fontSize="md" color={textColor} fontWeight="bold" pb=".5rem">
-          {funders.length}
+          {actualFunders !== null ? actualFunders.length : 'Loading...'}
         </Text>
       </Td>
 

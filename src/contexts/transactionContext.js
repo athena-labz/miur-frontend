@@ -2,6 +2,8 @@ import { C } from "lucid-cardano";
 import { createContext, useContext, useEffect, useState } from "react";
 import { Buffer } from "buffer";
 
+import { lockUtxo } from "./transactionUtils";
+
 export const TransactionContext_ = createContext({});
 
 const fromHex = (hex) => Buffer.from(hex, "hex");
@@ -25,8 +27,8 @@ export const TransactionContextProvider = ({ children }) => {
     const value = C.Value.new_from_assets(multiAssets);
     value.set_coin(C.BigNum.from_str(lovelace.toString()));
 
-    console.log("value")
-    console.log(value.to_json())
+    console.log("value");
+    console.log(value.to_json());
 
     return toHex(value.to_bytes());
   };
@@ -77,7 +79,9 @@ export const TransactionContextProvider = ({ children }) => {
   };
 
   return (
-    <TransactionContext_.Provider value={{ assembleTransaction, getValueCBOR }}>
+    <TransactionContext_.Provider
+      value={{ assembleTransaction, getValueCBOR, lockUtxo }}
+    >
       {children}
     </TransactionContext_.Provider>
   );
