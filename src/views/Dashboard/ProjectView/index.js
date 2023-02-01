@@ -73,6 +73,7 @@ function ProjectView() {
         setProject({
           name: res.data.project.name,
           creatorAddress: res.data.project.creator.stake_address,
+          creatorPaymentAddress: res.data.project.creator.payment_address,
           shortDescription: res.data.project.short_description,
           longDescription: res.data.project.long_description,
           subjects: res.data.project.subjects,
@@ -318,13 +319,10 @@ function ProjectView() {
                   <Funder
                     axios={baseAxios}
                     projectId={params.project_id}
+                    fundeePaymentAddress={project.creatorPaymentAddress}
                   />
                 ) : showAlreadyFunded ? (
-                  <Button
-                    bg={"gray.600"}
-                    color={"white"}
-                    w="full"
-                  >
+                  <Button bg={"gray.600"} color={"white"} w="full">
                     Project Already Funded By You
                   </Button>
                 ) : (

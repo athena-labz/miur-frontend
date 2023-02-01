@@ -69,7 +69,6 @@ export default function Dashboard() {
             "Projects Name",
             "Description",
             "Funders",
-            "Required Rewards",
           ]}
           data={projects}
         />
