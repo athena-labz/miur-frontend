@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 
 import { WalletSelector } from "components/WalletSelector";
 import { Info } from "components/Info";
+import { SliderInput } from "components/SliderInput";
 
 import { useWallet } from "../../contexts/walletContext";
 import { useUser } from "../../contexts/userContext";
@@ -10,10 +11,14 @@ import { useTransaction } from "../../contexts/transactionContext";
 
 import { Button, Stack, Input, FormControl, FormLabel } from "@chakra-ui/react";
 
+function numberWithCommas(x) {
+  return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}
+
 export function Funder({ axios, fundeePaymentAddress, projectId }) {
   const [openWalletSelector, setOpenWalletSelector] = useState(false);
   const [infoContent, setInfoContent] = useState(null);
-  const [fundingAmount, setFundingAmount] = useState(10_000_000);
+  const [fundingAmount, setFundingAmount] = useState(1_000);
   const [funding, setFunding] = useState(false);
 
   const { connect, curWallet, getWallets } = useWallet();
@@ -165,11 +170,16 @@ export function Funder({ axios, fundeePaymentAddress, projectId }) {
       >
         <FormControl id="funding_amount">
           <FormLabel>Funding Amount</FormLabel>
-          <Input
-            _placeholder={{ color: "gray.500" }}
+          <SliderInput
             value={fundingAmount}
-            onChange={(event) => setFundingAmount(parseInt(event.target.value))}
-            type="number"
+            setValue={setFundingAmount}
+            format={(val) => numberWithCommas(val) + " STEIN"}
+            parse={(val) => {
+              console.log(val)
+              console.log(isNaN(val))
+
+              return isNaN(val) ? Number(val.slice(0, -6).replaceAll(",", "")) : val;
+            }}
           />
         </FormControl>
         <Button

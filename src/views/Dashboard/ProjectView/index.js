@@ -8,18 +8,20 @@ import {
   UnorderedList,
   ListItem,
   Grid,
+  Button,
+  Stack,
+  Table,
+  Tbody,
+  Th,
+  Thead,
+  Tr,
+  Td,
 } from "@chakra-ui/react";
+
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
-import {
-  Button,
-  FormControl,
-  FormLabel,
-  Heading,
-  Input,
-  Stack,
-} from "@chakra-ui/react";
+
 import { AddIcon, SmallCloseIcon } from "@chakra-ui/icons";
 
 import Card from "components/Card/Card";
@@ -41,6 +43,10 @@ import { C } from "lucid-cardano";
 const baseAxios = axios.create({
   baseURL: process.env.REACT_APP_BASE_URL,
 });
+
+function numberWithCommas(x) {
+  return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}
 
 function ProjectView() {
   const { user, getUser } = useUser();
@@ -74,10 +80,13 @@ function ProjectView() {
           name: res.data.project.name,
           creatorAddress: res.data.project.creator.stake_address,
           creatorPaymentAddress: res.data.project.creator.payment_address,
+          creatorEmail: res.data.project.creator.email,
           shortDescription: res.data.project.short_description,
           longDescription: res.data.project.long_description,
           subjects: res.data.project.subjects,
           mediators: res.data.project.mediators,
+          funders: res.data.project.funders,
+          totalFundingAmount: res.data.project.total_funding_amount,
           daysToComplete: res.data.project.days_to_complete,
           deliverables: res.data.project.deliverables,
         });
@@ -197,6 +206,24 @@ function ProjectView() {
                           fontWeight="bold"
                           me="10px"
                         >
+                          Creator: {" "}
+                        </Text>
+                        <Text
+                          fontSize="md"
+                          color="gray.500"
+                          fontWeight="400"
+                          me="10px"
+                        >
+                          {project.creatorEmail}
+                        </Text>
+                      </Flex>
+                      <Flex align="center" mb="18px">
+                        <Text
+                          fontSize="md"
+                          color={textColor}
+                          fontWeight="bold"
+                          me="10px"
+                        >
                           Creator Address:{" "}
                         </Text>
                         <Tooltip label={project.creatorAddress}>
@@ -302,17 +329,6 @@ function ProjectView() {
                 </div>
               </Grid>
               <Stack spacing={6} direction={["column", "row"]} w={"100%"}>
-                {/* <Button
-                  bg={"red.400"}
-                  color={"white"}
-                  w="full"
-                  _hover={{
-                    bg: "red.500",
-                  }}
-                >
-                  Raise Accusation
-                </Button> */}
-
                 {showFund &&
                 process.env.REACT_APP_BLOCK_FUND?.toLocaleLowerCase() !==
                   "true" ? (
@@ -329,6 +345,128 @@ function ProjectView() {
                   <></>
                 )}
               </Stack>
+            </Stack>
+
+            <Stack
+              spacing={4}
+              w={"100%"}
+              bg={useColorModeValue("white", "gray.700")}
+              rounded={"xl"}
+              boxShadow={"lg"}
+              p={6}
+              my={12}
+            >
+              <Card p="16px" overflowX={{ sm: "scroll", xl: "hidden" }}>
+                <CardHeader p="12px 0px 28px 0px">
+                  <Flex
+                    pe={{ sm: "0px", md: "16px" }}
+                    w={{ sm: "100%", md: "100%" }}
+                    alignItems="center"
+                    justifyContent="space-between"
+                    flexDirection="row"
+                  >
+                    <Text
+                      fontSize="lg"
+                      color={textColor}
+                      fontWeight="bold"
+                      pb=".5rem"
+                    >
+                      Funding History
+                    </Text>
+                  </Flex>
+                  {project?.totalFundingAmount ? (
+                    <Flex
+                      pe={{ sm: "0px", md: "16px" }}
+                      w={{ sm: "50%", md: "50%" }}
+                      alignItems="end"
+                      justifyContent="flex-end"
+                      flexDirection="row"
+                    >
+                      <Text
+                        fontSize="lg"
+                        color={textColor}
+                        fontWeight="bold"
+                        pb=".5rem"
+                      >
+                        Total:{" "}
+                        {numberWithCommas(
+                          project?.totalFundingAmount
+                            ? project?.totalFundingAmount
+                            : 0
+                        )}{" "}
+                        STEIN
+                      </Text>
+                    </Flex>
+                  ) : (
+                    <></>
+                  )}
+                </CardHeader>
+                <Table variant="simple" color={textColor}>
+                  <Thead>
+                    <Tr my=".8rem" ps="0px">
+                      <Th
+                        color="gray.400"
+                        key={"funder-table-header"}
+                        ps={"0px"}
+                      >
+                        Funder
+                      </Th>
+                      <Th
+                        color="gray.400"
+                        key={"amount-table-header"}
+                        ps={null}
+                      >
+                        Amount
+                      </Th>
+                    </Tr>
+                  </Thead>
+                  <Tbody>
+                    {project?.funders
+                      .filter(({ status }) => status == "submitted")
+                      .map(({ user: { email }, amount }) => {
+                        return (
+                          <Tr>
+                            <Td pl="0px">
+                              <Flex
+                                align="center"
+                                py=".8rem"
+                                minWidth="100%"
+                                flexWrap="nowrap"
+                              >
+                                <Text
+                                  fontSize="md"
+                                  color={textColor}
+                                  fontWeight="bold"
+                                  minWidth="100%"
+                                >
+                                  {email}
+                                </Text>
+                              </Flex>
+                            </Td>
+
+                            <Td>
+                              <Flex
+                                align="center"
+                                py=".8rem"
+                                minWidth="100%"
+                                flexWrap="nowrap"
+                              >
+                                <Text
+                                  fontSize="md"
+                                  color={textColor}
+                                  fontWeight="bold"
+                                  minWidth="100%"
+                                >
+                                  {numberWithCommas(amount)} STEIN
+                                </Text>
+                              </Flex>
+                            </Td>
+                          </Tr>
+                        );
+                      })}
+                  </Tbody>
+                </Table>
+              </Card>
             </Stack>
           </Flex>
           <WalletSelector
