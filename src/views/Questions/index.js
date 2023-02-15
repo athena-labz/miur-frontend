@@ -67,7 +67,9 @@ const Questions = () => {
   const [powerUps, setPowerUps] = useState([
     {
       ...createPowerUp("Get Tip"),
-      onUse: () => onTipActivate("It contains an odd number"),
+      onUse: () => {
+        getTipBackend();
+      },
     },
     {
       ...createPowerUp("Get Percentage"),
@@ -87,7 +89,32 @@ const Questions = () => {
   const params = useParams();
   const history = useHistory();
 
-  const { user } = useUser();
+  const { user, getUser } = useUser();
+
+  const getTipBackend = async () => {
+    const userLocal = getUser();
+
+    const res = await baseAxios.post(
+      `/quiz/powerup/${params.question_id}/activate/get_hints`,
+      {
+        stake_address: userLocal.stakeAddress,
+        signature: userLocal.signature,
+      }
+    );
+
+    if (!res.data.success) {
+      console.error("error");
+      console.log(res.data);
+
+      failureToast(`Something went wrong: ${res.data.message}`);
+
+      return;
+    } else {
+      onTipActivate(res.data.powerup_payload.hint);
+    }
+
+    return res.data;
+  };
 
   const parseQuestionsToQuestion = (questions, currentQuestion) => {
     return questions[currentQuestion]["question"];
@@ -118,12 +145,38 @@ const Questions = () => {
     reloadValues();
   }, []);
 
-  const getPercentages = () => ({
-    0: 0.4,
-    1: 0.3,
-    2: 0.1,
-    3: 0.2,
-  });
+  const getPercentages = async () => {
+    const userLocal = getUser();
+
+    const res = await baseAxios.post(
+      `/quiz/powerup/${params.question_id}/activate/get_percentages`,
+      {
+        stake_address: userLocal.stakeAddress,
+        signature: userLocal.signature,
+      }
+    );
+
+    console.log("percentages", res.data)
+
+    if (!res.data.success) {
+      console.error("error");
+      console.log(res.data);
+
+      failureToast(`Something went wrong: ${res.data.message}`);
+
+      return null;
+    } else {
+      let result = {};
+
+      res.data.powerup_payload.percentages.forEach((percentage, idx) => {
+        result[idx] = percentage;
+      });
+
+      console.log("result", result)
+
+      return result;
+    }
+  };
 
   const onAnswer = async (attemptedAnswer) => {
     console.log("Attempting answer", user);
@@ -194,9 +247,9 @@ const Questions = () => {
     setPowerUpsBlocked(true);
   };
 
-  const onGetPercentage = () => {
+  const onGetPercentage = async () => {
     let optionsCopy = {};
-    const percentages = getPercentages();
+    const percentages = await getPercentages();
 
     const parsePercentage = (number) => (number * 100).toFixed(2);
 
@@ -205,6 +258,9 @@ const Questions = () => {
         percentages[key]
       )}%`;
     }
+
+    console.log("options", options)
+    console.log("%", optionsCopy)
 
     setOptions(optionsCopy);
 
