@@ -164,6 +164,17 @@ function ProjectView() {
         <>Loading</>
       ) : (
         <>
+          {project?.totalFundingAmount >= 1_000 && (
+            <Tooltip
+              aria-label="Project Funded"
+              label="This project received more than 1,000 STEIN and was, therefore, funded."
+              placement="top"
+            >
+              <Button bg={"green.600"} color={"white"} w="full">
+                Funded
+              </Button>
+            </Tooltip>
+          )}
           <Flex
             align={"center"}
             direction="column"
@@ -206,7 +217,7 @@ function ProjectView() {
                           fontWeight="bold"
                           me="10px"
                         >
-                          Creator: {" "}
+                          Creator:{" "}
                         </Text>
                         <Text
                           fontSize="md"
