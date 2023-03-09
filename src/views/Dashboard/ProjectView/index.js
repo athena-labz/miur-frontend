@@ -277,10 +277,10 @@ function ProjectView() {
                       >
                         Days to complete:{" "}
                       </Text>
+
                       <Text fontSize="md" color="gray.500" fontWeight="400">
                         {project.daysToComplete}
                       </Text>
-                      {/* </Flex> */}
                     </Flex>
                   </CardBody>
                 </Card>
@@ -338,7 +338,24 @@ function ProjectView() {
                     </CardBody>
                   </Card>
                 </div>
+
+                <Button
+                  variant="outline"
+                  colorScheme="teal"
+                  minW="110px"
+                  h="36px"
+                  fontSize="lg"
+                  px="1.5rem"
+                  onClick={() =>
+                    history.push(
+                      `/admin/projects/${params.project_id}/submissions`
+                    )
+                  }
+                >
+                  View Submissions
+                </Button>
               </Grid>
+
               <Stack spacing={6} direction={["column", "row"]} w={"100%"}>
                 {showFund &&
                 process.env.REACT_APP_BLOCK_FUND?.toLocaleLowerCase() !==

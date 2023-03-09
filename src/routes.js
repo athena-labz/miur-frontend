@@ -5,6 +5,7 @@ import Billing from "views/Dashboard/Billing";
 import RTLPage from "views/Dashboard/RTL";
 import Profile from "views/Dashboard/Profile";
 import ProjectView from "views/Dashboard/ProjectView";
+import SubmissionsView from "views/Dashboard/SubmissionsView";
 import { ArrowBackIcon, AtSignIcon } from "@chakra-ui/icons";
 
 import Questions from "views/Questions";
@@ -60,6 +61,15 @@ var dashRoutes = [
     icon: <ArrowBackIcon color="inherit" />,
     secondaryNavbar: true,
     component: CreateProject,
+    layout: "/admin",
+  },
+  {
+    path: "/projects/:project_id/submissions",
+    name: "project",
+    notSideBar: true,
+    icon: <ArrowBackIcon color="inherit" />,
+    secondaryNavbar: true,
+    component: SubmissionsView,
     layout: "/admin",
   },
   {

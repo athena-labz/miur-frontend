@@ -6,11 +6,11 @@ const WALLET_DATA = {
       secundaryColor: "#dce58b",
       store: "https://chrome.google.com/webstore/detail/nami/lpfcbjknijpeeillifnkikgncikgfhdo"
     },
-    ccvault: {
-      name: "CC Vault",
+    eternl: {
+      name: "Eternl",
       primaryColor: "#7b127c",
       secundaryColor: "#c9488b",
-      store: "https://chrome.google.com/webstore/detail/ccvaultio/kmhcihpebfmpgmihbkipmjlmmioameka"
+      store: "https://chrome.google.com/webstore/detail/eternl/kmhcihpebfmpgmihbkipmjlmmioameka"
     },
     gerowallet: {
       name: "Gero Wallet",
