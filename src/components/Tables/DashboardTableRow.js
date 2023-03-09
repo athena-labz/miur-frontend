@@ -8,7 +8,7 @@ import {
 } from "@chakra-ui/react";
 
 import React, { useEffect, useState } from "react";
-import { useHistory } from 'react-router-dom';
+import { useHistory } from "react-router-dom";
 
 function truncate(input, length) {
   if (input.length > length) {
@@ -52,7 +52,7 @@ function DashboardTableRow(props) {
 
       <Td>
         <Text fontSize="md" color={textColor} fontWeight="bold" pb=".5rem">
-          {actualFunders !== null ? actualFunders.length : 'Loading...'}
+          {actualFunders !== null ? actualFunders.length : "Loading..."}
         </Text>
       </Td>
 
@@ -70,9 +70,7 @@ function DashboardTableRow(props) {
           h="36px"
           fontSize="xs"
           px="1.5rem"
-          onClick={
-            () => history.push(`/admin/projects/${projectKey}`)
-          }
+          onClick={() => history.push(`/admin/projects/${projectKey}`)}
         >
           VIEW PROJECT
         </Button>
