@@ -3,6 +3,7 @@ import {
   Flex,
   Text,
   Icon,
+  Checkbox,
   useColorModeValue,
   Button,
   Input,
@@ -34,8 +35,27 @@ const baseAxios = axios.create({
   baseURL: process.env.REACT_APP_BASE_URL,
 });
 
-function numberWithCommas(x) {
-  return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+function padStr(i) {
+  return i < 10 ? "0" + i : "" + i;
+}
+
+function currentDate() {
+  var temp = new Date();
+  var dateStr =
+    padStr(temp.getFullYear()) +
+    "-" +
+    padStr(1 + temp.getMonth()) +
+    "-" +
+    padStr(temp.getDate());
+
+  return dateStr;
+}
+
+function dateToTimestamp(dateStr) {
+  const myDate = dateStr.split("-");
+  const newDate = new Date(myDate[0], myDate[1] - 1, myDate[2]);
+
+  return parseInt(newDate.getTime() / 1000);
 }
 
 function ProjectSubmissionForm({ onHide, isOpen, onSubmit }) {
@@ -72,6 +92,74 @@ function ProjectSubmissionForm({ onHide, isOpen, onSubmit }) {
   );
 }
 
+function SubmissionReviewForm({ onHide, isOpen, onSubmit }) {
+  const [approval, setApproval] = useState(true);
+  const [disqualified, setDisqualified] = useState(false);
+  const [review, setReview] = useState("");
+  const [deadline, setDeadline] = useState(currentDate());
+
+  return (
+    <Info
+      isOpen={isOpen}
+      onClose={onHide}
+      header={"Submission Review"}
+      body={
+        <div>
+          <Checkbox
+            isChecked={approval}
+            onChange={() => setApproval(!approval)}
+            marginBottom={"10px"}
+          >
+            Project Approved - No change required
+          </Checkbox>
+          <Textarea
+            rows={4}
+            placeholder="A review of the project. If it is being rejected, please provide a reason"
+            value={review}
+            onChange={(e) => setReview(e.target.value)}
+            marginTop={"10px"}
+          />
+          {approval === false && (
+            <Checkbox
+              isChecked={disqualified}
+              onChange={() => setDisqualified(!disqualified)}
+              marginTop={"10px"}
+            >
+              Project Disqualified - No more chances
+            </Checkbox>
+          )}
+          {approval === false && disqualified === false && (
+            <div style={{ marginTop: "10px" }}>
+              <Text>Until when does the user have to resubmit his project</Text>
+              <Input
+                type="date"
+                _placeholder={{ color: "gray.500" }}
+                value={deadline}
+                onChange={(event) => setDeadline(event.target.value)}
+              />
+            </div>
+          )}
+        </div>
+      }
+      footer={
+        <Button
+          colorScheme="teal"
+          onClick={() =>
+            onSubmit(
+              approval,
+              disqualified,
+              review,
+              disqualified || approval ? null : deadline
+            )
+          }
+        >
+          Submit
+        </Button>
+      }
+    />
+  );
+}
+
 function SubmissionsView() {
   const { user } = useUser();
   // const { curWallet, connect } = useWallet();
@@ -88,8 +176,11 @@ function SubmissionsView() {
 
   const [submissions, setSubmissions] = useState(null);
   const [submitter, setSubmitter] = useState(null);
+  const [mediators, setMediators] = useState(null);
+  const [currentSubmissionId, setCurrentSubmissionId] = useState(null);
 
   const [showSubmissionForm, setShowSubmissionForm] = useState(false);
+  const [showReviewForm, setShowReviewForm] = useState(false);
   const [infoContent, setInfoContent] = useState(null);
 
   const updateSubmissions = async () => {
@@ -98,6 +189,9 @@ function SubmissionsView() {
 
       setSubmissions(res.data.submissions);
       setSubmitter(res.data.submitter);
+      setMediators(
+        res.data.mediators.map(({ stake_address }) => stake_address)
+      );
     } catch (error) {
       console.dir(error);
     }
@@ -124,6 +218,30 @@ function SubmissionsView() {
     }
   };
 
+  const submitReview = async (approval, disqualified, review, deadline) => {
+    try {
+      const res = await baseAxios.post(
+        `/projects/review/${currentSubmissionId}`,
+        {
+          approval,
+          disqualified,
+          review,
+          deadline: deadline ? dateToTimestamp(deadline) : null,
+          reviewer: user.stakeAddress,
+          signature: user.signature,
+        }
+      );
+
+      console.log(res);
+
+      return true;
+    } catch (error) {
+      console.dir(error);
+
+      return false;
+    }
+  };
+
   useEffect(() => {
     updateSubmissions();
   }, []);
@@ -136,14 +254,14 @@ function SubmissionsView() {
         <>
           <Button
             variant="outline"
-            colorScheme="teal"
+            colorScheme="gray"
             minW="110px"
             h="36px"
             fontSize="xs"
             px="1.5rem"
             onClick={() => history.push(`/admin/projects/${params.project_id}`)}
           >
-            Get back to projects
+            Get back to project
           </Button>
           <Flex
             align={"center"}
@@ -153,10 +271,8 @@ function SubmissionsView() {
           >
             {submitter?.stake_address === user?.stakeAddress && (
               <Button
-                p="0px"
-                bg="transparent"
-                color="gray.500"
-                border="1px solid lightgray"
+                variant="outline"
+                colorScheme="teal"
                 borderRadius="15px"
                 w="full"
                 marginTop={"20px"}
@@ -164,16 +280,9 @@ function SubmissionsView() {
                   setShowSubmissionForm(true);
                 }}
               >
-                <Flex
-                  justifyContent="center"
-                  align="center"
-                  alignItems={"center"}
-                >
-                  <Icon as={FaPlus} fontSize="lg" marginRight={"20px"} />
-                  <Text fontSize="lg" fontWeight="bold">
-                    Submit Project
-                  </Text>
-                </Flex>
+                <Text fontSize="lg" fontWeight="bold">
+                  Submit / Resubmit Project
+                </Text>
               </Button>
             )}
 
@@ -188,24 +297,92 @@ function SubmissionsView() {
               </Text>
             )}
 
-            {submissions.map((submission) => (
-              <Card p="16px" my="24px">
-                <CardHeader p="12px 5px" mb="12px">
-                  <Text fontSize="lg" color={textColor} fontWeight="bold">
-                    {submission.title}
-                  </Text>
-                </CardHeader>
-                <CardBody px="5px">
-                  <Text
-                    fontSize="md"
-                    color="gray.500"
-                    fontWeight="400"
-                    mb="30px"
+            {submissions.map((submission, index) => (
+              <>
+                <Card p="16px" my="24px">
+                  <CardHeader p="12px 5px" mb="12px">
+                    <Text fontSize="lg" color={textColor} fontWeight="bold">
+                      {submission.title}
+                    </Text>
+                  </CardHeader>
+                  <CardBody px="5px">
+                    <Text
+                      fontSize="md"
+                      color="gray.500"
+                      fontWeight="400"
+                      mb="30px"
+                    >
+                      {submission.content}
+                    </Text>
+                  </CardBody>
+
+                  {index === submissions.length - 1 &&
+                    mediators?.includes(user.stakeAddress) &&
+                    submission.review === null && (
+                      <Button
+                        variant="outline"
+                        colorScheme="blue"
+                        borderRadius="15px"
+                        w="full"
+                        marginTop={"10px"}
+                        onClick={() => {
+                          setShowReviewForm(true);
+                          setCurrentSubmissionId(submission.submission_id);
+                        }}
+                      >
+                        <Text fontSize="lg" fontWeight="bold">
+                          Submit Review
+                        </Text>
+                      </Button>
+                    )}
+                </Card>
+                {submission.review && (
+                  <Card
+                    p="16px"
+                    my="24px"
+                    style={{ paddingLeft: "100px" }}
+                    color={submission.review.approval ? "green.500" : "red.500"}
                   >
-                    {submission.content}
-                  </Text>
-                </CardBody>
-              </Card>
+                    <CardHeader p="12px 5px" mb="12px">
+                      <Text
+                        fontSize="lg"
+                        color={
+                          submission.review.approval ? "green.500" : "red.500"
+                        }
+                        fontWeight="bold"
+                      >
+                        Review -{" "}
+                        {submission.review.approval ? "Approved" : "Rejected"}
+                      </Text>
+                    </CardHeader>
+                    <CardBody px="5px">
+                      <div>
+                        <Text
+                          fontSize="md"
+                          color="gray.500"
+                          fontWeight="400"
+                          mb="10px"
+                        >
+                          {submission.review.review}
+                        </Text>
+                        {submission.review.deadline && (
+                          <Text
+                            fontSize="sm"
+                            color="gray.500"
+                            fontWeight="400"
+                            mb="10px"
+                          >
+                            You have until{" "}
+                            {new Date(
+                              submission.review.deadline * 1_000
+                            ).toLocaleDateString()}
+                          </Text>
+                        )}
+                      </div>
+                    </CardBody>
+                  </Card>
+                )}
+              </>
             ))}
           </Flex>
         </>
@@ -233,11 +410,37 @@ function SubmissionsView() {
         }}
       />
 
+      <SubmissionReviewForm
+        isOpen={showReviewForm}
+        onHide={() => setShowReviewForm(false)}
+        onSubmit={(approval, disqualified, review, deadline) => {
+          submitReview(approval, disqualified, review, deadline).then(
+            (success) => {
+              if (success) {
+                updateSubmissions();
+                setShowReviewForm(false);
+                setCurrentSubmissionId(null);
+                setInfoContent({
+                  header: "Success",
+                  body: "Your review has been submitted",
+                });
+              } else {
+                setShowReviewForm(false);
+                setCurrentSubmissionId(null);
+                setInfoContent({
+                  header: "Error",
+                  body: "Something went wrong",
+                });
+              }
+            }
+          );
+        }}
+      />
+
       <Info
         isOpen={infoContent !== null}
         onClose={() => {
           setInfoContent(null);
-          if (pathAfterInfo !== null) history.push(pathAfterInfo);
         }}
         header={infoContent?.header}
         body={infoContent?.body}
