@@ -42,101 +42,89 @@ const failureToast = (message) => {
   });
 };
 
-const createPowerUp = (powerUp) => ({
-  name: powerUp,
-  used: false,
-});
+const parseQuestionsToQuestion = (questions, currentQuestion) => {
+  return questions[currentQuestion]["question"];
+};
 
-const getRandomIndex = (length, except) => {
-  let randomIndex = null;
-  while (randomIndex === null || except.includes(randomIndex)) {
-    randomIndex = Math.floor(Math.random() * length);
-  }
+const parseQuestionsToOptions = (questions, currentQuestion) => {
+  return questions[currentQuestion]["answers"];
 
-  return randomIndex;
+  let options = {};
+
+  questions[currentQuestion]["answers"].forEach((option, idx) => {
+    options[idx] = option;
+  });
+
+  return options;
 };
 
 const Questions = () => {
   const [loading, setLoading] = useState(true);
-  const [quizId, setQuizId] = useState(null);
   const [display, setDisplay] = useState(null);
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [questions, setQuestions] = useState(null);
-  const [answer, setAnswer] = useState(0);
-  const [options, setOptions] = useState(null);
-  const [powerUps, setPowerUps] = useState([
-    {
-      ...createPowerUp("Get Tip"),
-      onUse: () => {
-        getTipBackend();
-      },
-    },
-    {
-      ...createPowerUp("Get Percentage"),
-      onUse: () => onGetPercentage(),
-    },
-    {
-      ...createPowerUp("Eliminate Half"),
-      onUse: () => onEliminateHalfActivate(),
-    },
-    {
-      ...createPowerUp("Skip Question"),
-      onUse: () => onSkipActivate(),
-    },
-  ]);
-  const [powerUpsBlocked, setPowerUpsBlocked] = useState(false);
+  const [remainingOptions, setRemainingOptions] = useState(null);
+
+  const [tipsUsed, setTipsUsed] = useState(false);
+  const [skipUsed, setSkipUsed] = useState(false);
+  const [eliminateUsed, setEliminateUsed] = useState(false);
 
   const params = useParams();
   const history = useHistory();
 
   const { user, getUser } = useUser();
 
-  const getTipBackend = async () => {
-    const userLocal = getUser();
-
-    const res = await baseAxios.post(
-      `/quiz/powerup/${params.question_id}/activate/get_hints`,
-      {
-        stake_address: userLocal.stakeAddress,
-        signature: userLocal.signature,
+  const handlePowerUp = (powerups, currentQuestion) => {
+    for (let i = 0; i < powerups.length; i++) {
+      if (
+        powerups[i].used &&
+        powerups[i].question_index_used === currentQuestion
+      ) {
+        switch (powerups[i].name) {
+          case "get_hints":
+            setDisplay(`Tip: ${powerups[i].payload.hint}`);
+            break;
+          case "skip_question":
+            onAnswer(powerups[i].payload.answer.toString(), true);
+            break;
+          case "eliminate_half":
+            setRemainingOptions(powerups[i].payload.remaining_choices);
+            break;
+          default:
+            break;
+        }
       }
-    );
-
-    if (!res.data.success) {
-      console.error("error");
-      console.log(res.data);
-
-      failureToast(`Something went wrong: ${res.data.message}`);
-
-      return;
-    } else {
-      onTipActivate(res.data.powerup_payload.hint);
     }
-
-    return res.data;
-  };
-
-  const parseQuestionsToQuestion = (questions, currentQuestion) => {
-    return questions[currentQuestion]["question"];
-  };
-
-  const parseQuestionsToOptions = (questions, currentQuestion) => {
-    let options = {};
-    questions[currentQuestion]["answers"].forEach((option, idx) => {
-      options[idx] = option;
-    });
-
-    return options;
   };
 
   const reloadValues = async () => {
     const res = await baseAxios.get(`/quiz/assignment/${params.question_id}`);
 
-    const { current_question, questions, quiz_id } = res.data;
+    const { current_question, questions, quiz_id, powerups } = res.data;
 
-    setQuizId(quiz_id);
+    setDisplay(null);
+    setRemainingOptions(null);
+
     setQuestions(questions);
     setCurrentQuestion(current_question);
+
+    for (let i = 0; i < powerups.length; i++) {
+      switch (powerups[i].name) {
+        case "get_hints":
+          setTipsUsed(powerups[i].used);
+          break;
+        case "skip_question":
+          setSkipUsed(powerups[i].used);
+          break;
+        case "eliminate_half":
+          setEliminateUsed(powerups[i].used);
+          break;
+        default:
+          break;
+      }
+    }
+
+    handlePowerUp(powerups, current_question);
 
     setLoading(false);
   };
@@ -145,53 +133,14 @@ const Questions = () => {
     reloadValues();
   }, []);
 
-  const getPercentages = async () => {
-    const userLocal = getUser();
+  const onAnswer = async (attemptedAnswer, skipped = false) => {
+    const user = getUser();
 
-    const res = await baseAxios.post(
-      `/quiz/powerup/${params.question_id}/activate/get_percentages`,
-      {
-        stake_address: userLocal.stakeAddress,
-        signature: userLocal.signature,
-      }
-    );
-
-    console.log("percentages", res.data)
-
-    if (!res.data.success) {
-      console.error("error");
-      console.log(res.data);
-
-      failureToast(`Something went wrong: ${res.data.message}`);
-
-      return null;
-    } else {
-      let result = {};
-
-      res.data.powerup_payload.percentages.forEach((percentage, idx) => {
-        result[idx] = percentage;
-      });
-
-      console.log("result", result)
-
-      return result;
-    }
-  };
-
-  const onAnswer = async (attemptedAnswer) => {
     console.log("Attempting answer", user);
-    const res = await baseAxios.post(`/quiz/attempt/${quizId}`, {
-      stake_address: user.stakeAddress,
+    const res = await baseAxios.post(`/quiz/attempt/${params.question_id}`, {
       signature: user.signature,
       answer: parseInt(attemptedAnswer),
     });
-
-    // right answer
-    // state
-    // current_question
-    // remaining_attempts
-
-    console.log(res.data);
 
     if (res.data.right_answer === true) {
       if (res.data.state === "completed_success") {
@@ -200,114 +149,70 @@ const Questions = () => {
         successToast("Congratulations, you win the quiz!");
         history.push("/admin/profile");
       } else {
-        // setLoading(true);
-        successToast("Awesome, that was the right answer!");
+        if (skipped) {
+          successToast("Successfully skipped to another question!");
+        } else {
+          successToast("Awesome, that was the right answer!");
+        }
+
         setCurrentQuestion(currentQuestion + 1);
+        reloadValues();
+
+        return true;
       }
     } else {
       if (res.data.state === "completed_failure") {
         setLoading(true);
 
-        failureToast(
-          "Oh no, this was your last attempt! You'll have to try another quiz later."
-        );
+        if (skipped) {
+          failureToast(
+            "This is completely unexpected, tried to skip a question but failed! This was your last attempt! Talk with a teach or somoeone from the team to reset your quiz."
+          );
+        } else {
+          failureToast(
+            "Oh no, this was your last attempt! You'll have to try another quiz later."
+          );
+        }
+
         history.push("/admin/profile");
+
+        return false;
       } else {
-        failureToast(
-          `Woops, that was the wrong answer, you have ${res.data.remaining_attempts} more tries`
-        );
+        if (skipped) {
+          failureToast(
+            "Something went wrong, you were not able to skip the question and lost one attempt! If this causes you to fail, talk with a teach or somoeone from the team to reset your quiz."
+          );
+        } else {
+          failureToast(
+            `Woops, that was the wrong answer, you have ${res.data.remaining_attempts} more tries`
+          );
+        }
+
+        return false;
       }
     }
-
-    // if (parseInt(attemptedAnswer) === answer) {
-    //   console.log("You Win");
-    //   successToast("Congratulation you give the right answer!");
-    // } else {
-    //   console.log("You loose");
-    //   failureToast("You selected the wrong answer!");
-    // }
   };
 
-  const onSkip = () => {
-    setCurrentQuestion(currentQuestion + 1);
-
-    setPowerUpsBlocked(true);
-
-    successToast("Successfully skipped to another question!");
-  };
-
-  const onTipActivate = (tip) => {
-    setDisplay(`Tip: ${tip}`);
-
-    let powerUpsCopy = [...powerUps];
-    powerUpsCopy[0].used = true;
-
-    setPowerUps(powerUpsCopy);
-
-    setPowerUpsBlocked(true);
-  };
-
-  const onGetPercentage = async () => {
-    let optionsCopy = {};
-    const percentages = await getPercentages();
-
-    const parsePercentage = (number) => (number * 100).toFixed(2);
-
-    for (let key in options) {
-      optionsCopy[key] = `${options[key]} - ${parsePercentage(
-        percentages[key]
-      )}%`;
-    }
-
-    console.log("options", options)
-    console.log("%", optionsCopy)
-
-    setOptions(optionsCopy);
-
-    let powerUpsCopy = [...powerUps];
-    powerUpsCopy[1].used = true;
-
-    setPowerUps(powerUpsCopy);
-
-    setPowerUpsBlocked(true);
-  };
-
-  const onEliminateHalfActivate = () => {
-    let optionsCopy = {};
-    let optionsLength = Object.keys(options).length;
-
-    let eliminateIndexes = [];
-    for (let i = 0; i < Math.floor(optionsLength / 2); i++) {
-      eliminateIndexes.push(
-        getRandomIndex(optionsLength, [...eliminateIndexes, answer])
+  const usePowerUp = async (axios, user, questionAssignmentId, name) => {
+    try {
+      const res = await axios.post(
+        `/quiz/powerup/${questionAssignmentId}/activate/${name}`,
+        {
+          stake_address: user.stakeAddress,
+          signature: user.signature,
+        }
       );
+
+      reloadValues();
+
+      return Promise.resolve(res.data);
+    } catch (e) {
+      console.error(e);
+
+      failureToast(`Something went wrong: ${e}`);
+
+      return Promise.reject(e);
     }
-
-    for (let key in options) {
-      if (eliminateIndexes.includes(parseInt(key))) continue;
-
-      optionsCopy[key] = options[key];
-    }
-
-    setOptions(optionsCopy);
-
-    let powerUpsCopy = [...powerUps];
-    powerUpsCopy[2].used = true;
-
-    setPowerUps(powerUpsCopy);
-
-    setPowerUpsBlocked(true);
-  };
-
-  const onSkipActivate = () => {
-    onSkip();
-
-    let powerUpsCopy = [...powerUps];
-    powerUpsCopy[3].used = true;
-
-    setPowerUps(powerUpsCopy);
-
-    setPowerUpsBlocked(true);
   };
 
   return (
@@ -323,9 +228,44 @@ const Questions = () => {
         <>
           <Question
             question={parseQuestionsToQuestion(questions, currentQuestion)}
-            options={parseQuestionsToOptions(questions, currentQuestion)}
-            powerUps={powerUps}
-            powerUpsDisabled={powerUpsBlocked}
+            options={
+              remainingOptions
+                ? remainingOptions
+                : parseQuestionsToOptions(questions, currentQuestion)
+            }
+            powerUps={[
+              {
+                name: "Get Tip",
+                used: tipsUsed,
+                onUse: () => {
+                  usePowerUp(baseAxios, user, params.question_id, "get_hints");
+                },
+              },
+              {
+                name: "Eliminate Half",
+                used: eliminateUsed,
+                onUse: () => {
+                  usePowerUp(
+                    baseAxios,
+                    user,
+                    params.question_id,
+                    "eliminate_half"
+                  );
+                },
+              },
+              {
+                name: "Skip Question",
+                used: skipUsed,
+                onUse: () => {
+                  usePowerUp(
+                    baseAxios,
+                    user,
+                    params.question_id,
+                    "skip_question"
+                  );
+                },
+              },
+            ]}
             onAnswer={onAnswer}
             extraDisplay={display}
           />

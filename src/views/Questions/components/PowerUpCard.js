@@ -5,7 +5,7 @@ const PowerUpCard = ({
   identifier,
   onSelect,
   used = false,
-  disabled = False,
+  disabled = false,
 }) => {
   return (
     <div className=" w-full h-60  rounded-md">
