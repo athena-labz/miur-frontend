@@ -81,7 +81,7 @@ const Question = ({
               Life-Lines
             </h1>
             <div
-              className="grid grid-cols-1  lg:grid-cols-4"
+              className="grid grid-cols-1 lg:grid-cols-3"
               style={{ gap: "3rem" }}
             >
               {powerUps.map(({ name, used, onUse }, idx) => (
