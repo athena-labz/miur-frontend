@@ -48,14 +48,6 @@ const parseQuestionsToQuestion = (questions, currentQuestion) => {
 
 const parseQuestionsToOptions = (questions, currentQuestion) => {
   return questions[currentQuestion]["answers"];
-
-  let options = {};
-
-  questions[currentQuestion]["answers"].forEach((option, idx) => {
-    options[idx] = option;
-  });
-
-  return options;
 };
 
 const Questions = () => {
@@ -100,7 +92,14 @@ const Questions = () => {
   const reloadValues = async () => {
     const res = await baseAxios.get(`/quiz/assignment/${params.question_id}`);
 
-    const { current_question, questions, quiz_id, powerups } = res.data;
+    const { current_question, questions, quiz_id, powerups, current_limit } = res.data;
+
+    if (current_question > current_limit) {
+      setLoading(true);
+
+      failureToast(`You have completed all available questions from this quiz, come back later!`);
+      history.push("/admin/profile");
+    }
 
     setDisplay(null);
     setRemainingOptions(null);
