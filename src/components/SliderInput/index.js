@@ -50,8 +50,8 @@ export function SliderInput({
         value={value}
         onChange={handleChange}
         min={100}
-        max={1_000}
-        step={50}
+        max={10_000}
+        step={100}
       >
         <SliderTrack>
           <SliderFilledTrack />
