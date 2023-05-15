@@ -92,12 +92,20 @@ const Questions = () => {
   const reloadValues = async () => {
     const res = await baseAxios.get(`/quiz/assignment/${params.question_id}`);
 
-    const { current_question, questions, quiz_id, powerups, current_limit } = res.data;
+    const {
+      current_question,
+      questions,
+      quiz_id,
+      powerups,
+      current_limit,
+    } = res.data;
 
     if (current_question > current_limit) {
       setLoading(true);
 
-      failureToast(`You have completed all available questions from this quiz, come back later!`);
+      failureToast(
+        `You have completed all available questions from this quiz, come back later!`
+      );
       history.push("/admin/profile");
     }
 
@@ -145,7 +153,9 @@ const Questions = () => {
       if (res.data.state === "completed_success") {
         setLoading(true);
 
-        successToast("Congratulations, you win the quiz!");
+        successToast(
+          "Congratulations, you win the quiz! If you want to claim your NFT in mainnet, register at the following link to be notified when the NFT is ready https://athenacrowdfunding.com/signup"
+        );
         history.push("/admin/profile");
       } else {
         if (skipped) {

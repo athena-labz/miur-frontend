@@ -1,0 +1,130 @@
+[
+    {
+        "question": "The total assets of the debit account v/suppliers express:",
+        "answers": [
+            "a) The cost for purchases made",
+            "b) Payments made",
+            "c) The amount of invoices to be paid",
+            "d) The amount of invoices to be received"
+        ],
+        "right_answer": 3,
+        "hints": [
+            "A debt is a sum of money that you have to pay at the end of the predetermined deadline"
+        ]
+    },
+    {
+        "question": "The credits of the V/Customer credit account expresses the total amount:",
+        "answers": [
+            "a) Of invoices issued",
+            "b) Of  sales revenues",
+            "c) Of invoice still to be collected",
+            "d) Of invoices to be paid "
+        ],
+        "right_answer": 3,
+        "hints": [
+            "The credit is a sum of money that the creditor must collect by he end of the predetermined deadline"
+        ]
+    },
+    {
+        "question": "What is deindustrialization?",
+        "answers": [
+            "a) It is the process of decrease in the importance of service and industry in",
+            "b) The economy and the increase in the importance of the tertiary sector in",
+            "c) The production;",
+            "d) It is a term that refers to the move away from the primary sector to the secondary sector;",
+            "e) Is the process of decrease in the importance of industry and manufacturing in the economy and the increase in the importance in the tertiary sector of production;",
+            "f) Is the process that is influencing the developing countries."
+        ],
+        "right_answer": 3,
+        "hints": [
+            "the deindustralisation is the move away from the industralisation to the service sector"
+        ]
+    },
+    {
+        "question": "What is microcredit?",
+        "answers": [
+            "a) Is the extension of big amount of money to unemployed people and others that lives in poverty;",
+            "b) Is the extension of microloans to people who find impossible to obtain a loan because they don't meet any of the traditional requirements for credit and lives in poverty; ",
+            "c) Is the extension of microloans to people that meet traditional requiments for credit;",
+            "d) Is the extension small amount of money to people that find impossible to have a loans because they meet traditional requiments for credit;"
+        ],
+        "right_answer": 2,
+        "hints": [
+            "a traditional requiments for credits are for example: collateral and employment."
+        ]
+    },
+    {
+        "question": "an enterprises is:",
+        "answers": [
+            "a) A series of right connected between them for a personal purpose;",
+            "b) Is an economic activity organized for the purpose of production or the exchange of goods and service;",
+            "c) An activity that fulfill series of deeds that aren\u2019t connected between them;",
+            "d) Is an activity that cannot have more than one entrepreneur;"
+        ],
+        "right_answer": 2,
+        "hints": [
+            "enterprices is aimed at achieving an economic purpose, of both public and private interest"
+        ]
+    },
+    {
+        "question": "The commercial brand:",
+        "answers": [
+            "a) Replaces the manufacturer\u2019s one;",
+            "b) Identifies the manufacturer\u2019s one;",
+            "c) An be placed next to the manufacturer\u2019s one;",
+            "d) Doesn't identify the reseller\u2019s one."
+        ],
+        "right_answer": 3,
+        "hints": [
+            "it cannot hide or replace the manufacturer\u2019s one."
+        ]
+    },
+    {
+        "question": "The functional distribution measures the income received:",
+        "answers": [
+            "a) From various production sectors;",
+            "b) From various social classes;",
+            "c) From various subjects;",
+            "d) From the various factors of production;"
+        ],
+        "right_answer": 4,
+        "hints": [
+            "it analyzes the distribution of RN between wages, profits, rents and interests directed at specific people."
+        ]
+    },
+    {
+        "question": "Owners receive the differential annuity on the basis of:",
+        "answers": [
+            "a) Soil fertility;",
+            "b) The location of the soil;",
+            "c) The actual performance of the soil;",
+            "d) To the resources of the subsoil;"
+        ],
+        "right_answer": 1,
+        "hints": [
+            "david riccardo saw that all soils have different productivity so he theorized the law of diminishing returns"
+        ]
+    },
+    {
+        "question": "An\u00a0interpretation\u00a0key\u00a0is\u00a0required\u00a0to\u00a0obtain\u00a0information",
+        "answers": [
+            "a) True",
+            "b) False"
+        ],
+        "right_answer": 0,
+        "hints": [
+            "to arrive at the information the data must be analyzed."
+        ]
+    },
+    {
+        "question": "Redundancy is the repetition of data",
+        "answers": [
+            "a) True",
+            "b) False"
+        ],
+        "right_answer": 0,
+        "hints": [
+            "\nredundancy happened before the database was introduced, so before that happened most data was stored more than once."
+        ]
+    }
+]
